@@ -1,0 +1,1398 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Grading Slope Solver</title><meta name="description" content="Lock the grading values you know and get grades, spot levels, contours, daylight offsets, cross falls and ramp runs as copy-ready Revit formulas."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>:root{--bg:#fff7f1;--bg-image:radial-gradient(1100px 520px at 88% -8%,#ffe0cc 0%,transparent 62%),radial-gradient(900px 520px at -5% 105%,#ffeedd 0%,transparent 60%);--card:#ffffff;--surface-2:#fff4ee;--ink:#3a1d16;--muted:#7b5b50;--faint:#b0948a;--line:#f1ddd4;--line-strong:#e3c2b5;--rule:#5a3a30;--accent:#ec4560;--accent-2:#f7941d;--accent-ink:#ffffff;--accent-soft:#ffe6e2;--title:#c3282f;--dot:#f26b3a;--warn:#c2620a;--warn-soft:#fff0dc;--err:#c81e3a;--err-soft:#fde2e4;--grid:#f7e9e2;--geo-fill:#ffd9c2;--target:#c3282f;--rainbow:linear-gradient(90deg,#ec4560 0%,#f7941d 38%,#29a39b 72%,#7cc26b 100%);--shadow:0 1px 2px rgba(120,60,40,.06),0 10px 30px rgba(120,60,40,.08);--mono:"JetBrains Mono",ui-monospace,Consolas,monospace;--sans:"Nunito Sans",system-ui,"Segoe UI",Roboto,sans-serif;--display:"Rajdhani","Segoe UI",system-ui,sans-serif;color-scheme:light}@media (prefers-color-scheme:dark){:root:not([data-theme]){--bg:#0d0f12;--bg-image:radial-gradient(1000px 520px at 90% -10%,#2a1c22 0%,transparent 60%),radial-gradient(900px 520px at 0% 110%,#152230 0%,transparent 60%);--card:#161a1f;--surface-2:#1c2127;--ink:#eceef1;--muted:#a6adb6;--faint:#6f7781;--line:#262c33;--line-strong:#3a424c;--rule:#c3cad3;--accent:#ff5c7a;--accent-2:#ffa53d;--accent-ink:#1a0b06;--accent-soft:#3a1f27;--title:#ff8a6b;--dot:#ff7a4a;--warn:#ffb36b;--warn-soft:#3a2a1b;--err:#ff8f86;--err-soft:#3e1f25;--grid:#1e2329;--geo-fill:#3b2a25;--target:#ffa53d;--rainbow:linear-gradient(90deg,#ff5c7a,#ffa53d 40%,#2fc4b2 75%,#8bd17c);--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);color-scheme:dark}}:root[data-theme="light"]{--bg:#f4f7fb;--bg-image:radial-gradient(1000px 500px at 90% -10%,#dfeaff 0%,transparent 60%),radial-gradient(900px 500px at 0% 110%,#e5f7fb 0%,transparent 60%);--card:#ffffff;--surface-2:#f2f6fb;--ink:#14202b;--muted:#56687a;--faint:#93a1ad;--line:#e1e7ee;--line-strong:#c8d2dc;--rule:#33424f;--accent:#2563eb;--accent-2:#06b6d4;--accent-ink:#ffffff;--accent-soft:#e3ecff;--title:#1d4ed8;--dot:#2563eb;--warn:#b4540a;--warn-soft:#fdeedb;--err:#c81e3a;--err-soft:#fde2e4;--grid:#edf1f6;--geo-fill:#dbe7ff;--target:#e11d48;--rainbow:linear-gradient(90deg,#2563eb,#06b6d4 45%,#10b981 80%,#84cc16);--shadow:0 1px 2px rgba(20,40,80,.05),0 10px 30px rgba(20,40,80,.07);color-scheme:light}:root[data-theme="bplight"]{--bg:#e9f1fb;--bg-image:radial-gradient(1000px 500px at 90% -10%,#cfe1fa 0%,transparent 60%),repeating-linear-gradient(0deg,transparent 0 23px,rgba(28,94,216,.05) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(28,94,216,.05) 23px 24px);--card:#fbfdff;--surface-2:#eef4fc;--ink:#0f2a52;--muted:#4a6488;--faint:#8fa6c4;--line:#d5e2f2;--line-strong:#a9c0de;--rule:#1b3b6b;--accent:#1c5ed8;--accent-2:#3aa0ff;--accent-ink:#ffffff;--accent-soft:#dde9fd;--title:#123f8f;--dot:#1c5ed8;--warn:#b4540a;--warn-soft:#fbe9d4;--err:#b42318;--err-soft:#f8dedb;--grid:#e2ecf8;--geo-fill:#d0e2fb;--target:#e0523c;--rainbow:linear-gradient(90deg,#123f8f,#1c5ed8 40%,#3aa0ff 75%,#8fd0ff);--shadow:0 1px 2px rgba(15,42,82,.06),0 10px 30px rgba(15,42,82,.08);color-scheme:light}:root[data-theme="ocean"]{--bg:#e8f6f7;--bg-image:linear-gradient(160deg,#dff3f6 0%,#c8ebef 45%,#e6f7f1 100%);--card:#ffffff;--surface-2:#effafa;--ink:#08323e;--muted:#3d6672;--faint:#86a9b2;--line:#cfe8eb;--line-strong:#9fcdd4;--rule:#134a57;--accent:#0a8aa0;--accent-2:#22c3a6;--accent-ink:#ffffff;--accent-soft:#d5f1f4;--title:#07687a;--dot:#0aa1b0;--warn:#c06a12;--warn-soft:#fbe6cf;--err:#b42318;--err-soft:#f8dedb;--grid:#e0f0f2;--geo-fill:#bfe7ee;--target:#e0703a;--rainbow:linear-gradient(90deg,#0b3a52,#0a8aa0 40%,#22c3a6 75%,#9be7c4);--shadow:0 1px 2px rgba(8,50,62,.06),0 10px 30px rgba(8,50,62,.09);color-scheme:light}:root[data-theme="colorful"]{--bg:#faf7ff;--bg-image:linear-gradient(135deg,#ffe3f1 0%,#e6e8ff 40%,#dcf6ee 75%,#fff3d1 100%);--card:#ffffff;--surface-2:#f7f4ff;--ink:#1d1934;--muted:#5c5875;--faint:#9a96b0;--line:#e7e3f3;--line-strong:#c9c2e2;--rule:#2e2853;--accent:#7c3aed;--accent-2:#ec4899;--accent-ink:#ffffff;--accent-soft:#efe7ff;--title:#6d28d9;--dot:#f59e0b;--warn:#e0601e;--warn-soft:#ffe6d4;--err:#c81e4a;--err-soft:#fbdbe3;--grid:#efedf6;--geo-fill:#f9c3a3;--target:#e2365f;--rainbow:linear-gradient(90deg,#7c3aed,#ec4899 30%,#f59e0b 60%,#10b981 85%,#06b6d4);--shadow:0 1px 2px rgba(40,20,90,.06),0 10px 30px rgba(40,20,90,.09);color-scheme:light}:root[data-theme="sage"]{--bg:#f2f6ef;--bg-image:radial-gradient(1000px 500px at 90% -10%,#dcebd2 0%,transparent 60%),radial-gradient(900px 500px at 0% 110%,#eef3e1 0%,transparent 60%);--card:#ffffff;--surface-2:#f2f7ef;--ink:#17251d;--muted:#4e5f54;--faint:#8e9c92;--line:#dde7d7;--line-strong:#b9cbb1;--rule:#2b3d31;--accent:#2c7a57;--accent-2:#8bbf3f;--accent-ink:#ffffff;--accent-soft:#dcefe3;--title:#1f6346;--dot:#2c7a57;--warn:#a6561b;--warn-soft:#f6e6d2;--err:#b42318;--err-soft:#f6dcd8;--grid:#e8efe3;--geo-fill:#d3eadc;--target:#c2572b;--rainbow:linear-gradient(90deg,#1f6346,#2c7a57 35%,#8bbf3f 70%,#e0c34a);--shadow:0 1px 2px rgba(23,37,29,.06),0 10px 30px rgba(23,37,29,.08);color-scheme:light}:root[data-theme="night"]{--bg:#0d0f12;--bg-image:radial-gradient(1000px 520px at 90% -10%,#2a1c22 0%,transparent 60%),radial-gradient(900px 520px at 0% 110%,#152230 0%,transparent 60%);--card:#161a1f;--surface-2:#1c2127;--ink:#eceef1;--muted:#a6adb6;--faint:#6f7781;--line:#262c33;--line-strong:#3a424c;--rule:#c3cad3;--accent:#ff5c7a;--accent-2:#ffa53d;--accent-ink:#1a0b06;--accent-soft:#3a1f27;--title:#ff8a6b;--dot:#ff7a4a;--warn:#ffb36b;--warn-soft:#3a2a1b;--err:#ff8f86;--err-soft:#3e1f25;--grid:#1e2329;--geo-fill:#3b2a25;--target:#ffa53d;--rainbow:linear-gradient(90deg,#ff5c7a,#ffa53d 40%,#2fc4b2 75%,#8bd17c);--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);color-scheme:dark}:root[data-theme="dark"]{--bg:#0a1730;--bg-image:radial-gradient(1000px 520px at 90% -10%,#163a70 0%,transparent 60%),repeating-linear-gradient(0deg,transparent 0 23px,rgba(127,196,255,.05) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(127,196,255,.05) 23px 24px);--card:#10234a;--surface-2:#0d1d3e;--ink:#eaf0ff;--muted:#a9b8da;--faint:#7487b3;--line:#21396a;--line-strong:#34528a;--rule:#c9d6f5;--accent:#4c8dff;--accent-2:#7fd3ff;--accent-ink:#ffffff;--accent-soft:#1a3a72;--title:#8fc4ff;--dot:#7fd3ff;--warn:#ffb36b;--warn-soft:#3c2a1b;--err:#ff8f86;--err-soft:#3e1f25;--grid:#142a57;--geo-fill:#1c3b6e;--target:#ffb36b;--rainbow:linear-gradient(90deg,#4c8dff,#7fd3ff 50%,#c9d6f5);--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);color-scheme:dark}:root[data-theme="graphite"]{--bg:#17191b;--bg-image:radial-gradient(1000px 520px at 90% -10%,#2b2618 0%,transparent 60%);--card:#212427;--surface-2:#1b1e21;--ink:#ece8df;--muted:#b0aa9d;--faint:#7f7a70;--line:#303438;--line-strong:#4a4f54;--rule:#d9d4c8;--accent:#f2b84b;--accent-2:#f97316;--accent-ink:#231a06;--accent-soft:#3d3220;--title:#f2b84b;--dot:#f2b84b;--warn:#ff9f6b;--warn-soft:#41291b;--err:#ff8f86;--err-soft:#432424;--grid:#26292c;--geo-fill:#3a3220;--target:#ff7a59;--rainbow:linear-gradient(90deg,#f2b84b,#f97316 50%,#ef4444);--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);color-scheme:dark}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg-image),var(--bg);background-attachment:fixed;color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}a{color:var(--accent)}code,.mono{font-family:var(--mono)}button,select,input{font:inherit;color:inherit}.lbl{font:600 10.5px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}.page{max-width:1440px;margin:0 auto;padding:0 32px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--card);border-radius:12px;padding:9px 16px;font:700 15px/1 var(--display);letter-spacing:.02em;cursor:pointer;text-decoration:none;color:var(--ink);transition:.15s;white-space:nowrap}.btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}.btn.primary{background:linear-gradient(100deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--accent-ink);box-shadow:0 6px 18px -6px var(--accent)}.btn.primary:hover{color:var(--accent-ink);filter:brightness(1.05)}.btn.sm{padding:6px 11px;font-size:13.5px;border-radius:10px}.btn svg{width:16px;height:16px}.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--card);border-radius:10px;padding:5px 10px;font:500 12px var(--mono);cursor:pointer;color:var(--ink);transition:.15s}.chip:hover{border-color:var(--accent);color:var(--accent)}.chip[aria-pressed="true"]{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink);border-color:transparent}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--card);border-radius:8px;padding:4px 9px;font:500 12px var(--mono);color:var(--muted)}header.top{display:grid;grid-template-columns:minmax(360px,1fr) auto auto;gap:22px;align-items:center;padding:22px 0 12px}.brand .kicker{font:600 11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--title)}.brand h1{margin:4px 0 2px;font:700 34px/1.05 var(--display);color:var(--title);letter-spacing:.01em}.brand .subtitle{font:700 16px var(--display);color:var(--ink);letter-spacing:.02em}.brand p{margin:2px 0 8px;color:var(--muted);font-size:13.5px}.status{white-space:nowrap;display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);border:1px solid var(--line-strong);color:var(--ink);border-radius:999px;padding:4px 12px;font:600 12px var(--mono)}.status i{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 25%,transparent)}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.units-pill{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 8px 6px 12px;box-shadow:var(--shadow)}.units-pill .ic{font-size:18px}.units-pill .t{display:flex;flex-direction:column;line-height:1.1}.units-pill .t b{font:700 14px var(--display)}.units-pill .t span{font:500 10.5px var(--mono);color:var(--muted)}.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden}.seg button{border:0;background:var(--card);padding:6px 10px;font:500 12.5px var(--mono);cursor:pointer;color:var(--ink)}.seg button + button{border-left:1px solid var(--line)}.seg button[aria-pressed="true"]{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink)}.prepared{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}.prepared .t{text-align:right;line-height:1.2}.prepared .k{font:700 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}.prepared b{display:block;font:700 18px var(--display);color:var(--ink);margin-top:2px}.prepared span{font-size:12.5px;color:var(--muted)}.avatar{--sz:64px;width:var(--sz);height:var(--sz);border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#ec4560,#f7941d,#f5d142,#29a39b,#3b82f6,#a855f7,#ec4560);flex:none}.avatar > *{width:100%;height:100%;border-radius:50%;border:3px solid var(--card);display:grid;place-items:center;background:var(--surface-2);overflow:hidden;font:700 calc(var(--sz) * .32) var(--display);color:var(--title);object-fit:cover}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:4px 0 12px}.toolbar .grow{flex:1}.theme-pick{display:flex;align-items:center;gap:8px}.theme-pick select{appearance:none;-webkit-appearance:none;border:1px solid var(--line-strong);border-radius:10px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 10px center;color:var(--ink);font:600 13px var(--sans);padding:7px 32px 7px 12px;min-width:170px;cursor:pointer}.theme-pick select:focus{outline:2px solid var(--accent);outline-offset:1px}.theme-dots{display:flex;border-radius:8px;overflow:hidden;border:1px solid var(--line-strong)}.theme-dots i{width:10px;height:28px;display:block}.theme-cycle{width:34px;height:34px;border:1px solid var(--line-strong);border-radius:10px;background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer}.theme-cycle:hover{border-color:var(--accent);color:var(--accent)}.theme-cycle svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}nav.tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scrollbar-width:thin}nav.tabs button,nav.tabs a{flex:none;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--card);border-radius:12px;padding:9px 15px;cursor:pointer;color:var(--ink);font:700 15.5px/1 var(--display);letter-spacing:.02em;text-decoration:none;transition:.15s}nav.tabs button::before,nav.tabs a::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--dot)}nav.tabs a::before{background:var(--faint)}nav.tabs button:hover,nav.tabs a:hover{border-color:var(--accent);color:var(--accent)}nav.tabs .num{order:2;font:500 10.5px var(--mono);color:var(--faint)}nav.tabs button[aria-selected="true"]{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink);border-color:transparent;box-shadow:0 6px 16px -6px var(--accent)}nav.tabs button[aria-selected="true"]::before{background:var(--accent-ink)}nav.tabs button[aria-selected="true"] .num{color:var(--accent-ink);opacity:.8}nav.tabs .sep{flex:none;width:1px;background:var(--line-strong);margin:4px 4px}.rule-glow{height:3px;background:var(--rainbow);border-radius:3px;margin:0 0 22px;opacity:.9}.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;font:500 12px var(--mono);color:var(--muted)}.steps span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px}.steps b{color:var(--accent);margin-right:6px}.solver{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px 14px;flex-wrap:wrap;border-bottom:1px solid var(--line)}.card-h h2{margin:0;font:700 21px/1.1 var(--display);color:var(--ink);letter-spacing:.01em}.card-h .sub{color:var(--muted);font-size:13.5px;margin:3px 0 0}.card-b{padding:20px 22px 22px}.diagram{width:100%;height:auto;display:block;background:var(--surface-2);border:1px solid var(--line);border-radius:16px;user-select:none;-webkit-user-select:none}.diagram .gridline{fill:none;stroke:var(--grid);stroke-width:1}.diagram .geo{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}.diagram .fillgeo{fill:var(--geo-fill);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}.diagram .wall{stroke:none}.diagram .joint{fill:none;stroke:var(--ink);stroke-width:1;opacity:.7}.diagram .course{fill:var(--accent);opacity:.18;stroke:none}.diagram .target{stroke:var(--target);stroke-width:2.2;stroke-dasharray:9 6}.diagram .aux{fill:none;stroke:var(--faint);stroke-width:1.1;stroke-dasharray:8 3 2 3}.diagram .dim{stroke:var(--muted);stroke-width:.9}.diagram .hl{stroke:var(--accent);stroke-width:2.5;fill:none}.diagram .dot{fill:var(--ink)}.diagram .warnfill{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.2}.diagram text{font-family:var(--mono);font-size:17px;fill:var(--ink)}.diagram .note{fill:var(--muted);font-size:16px}.tag{cursor:pointer}.tag rect{fill:var(--card);stroke:var(--line-strong);stroke-width:1.2;rx:9px}.tag text{font-size:17px}.tag .tn{fill:var(--muted)}.tag.on rect{fill:var(--accent);stroke:var(--accent)}.tag.on text,.tag.on .tn{fill:var(--accent-ink)}.tag.fixed rect{stroke-dasharray:3 2}.tag:hover rect{stroke:var(--accent);stroke-width:1.8}.tag.ro{cursor:default}.tag.ro rect{fill:var(--surface-2)}.dial .bezel{fill:var(--card);stroke:var(--line-strong);stroke-width:2}.dial .face{stroke:var(--line-strong);stroke-width:1.5}.dial .tick{stroke:var(--faint);stroke-width:1}.dial .tick.maj{stroke:var(--muted);stroke-width:1.8}.dial .segline{stroke:var(--line-strong);stroke-width:1.8}.dial .seg{cursor:grab;touch-action:none;outline:none}.dial .seg path{fill:transparent}.dial .seg:hover path,.dial .seg:focus-visible path{fill:color-mix(in srgb,var(--accent-soft) 70%,transparent)}.dial .seg.on path{fill:var(--accent-soft)}.dial .seg text{font:700 19px var(--mono);letter-spacing:.08em;fill:var(--muted)}.dial .seg.on text{fill:var(--title)}.dial .window{fill:none;stroke:var(--accent);stroke-width:3.5}.dial .pointer{fill:var(--accent)}.dial.dragging .seg{cursor:grabbing}#dialRot{transition:transform .55s cubic-bezier(.2,.8,.2,1)}.viewtitle{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:16px}.bubble{width:54px;height:54px;border-radius:50%;padding:2px;background:conic-gradient(from 200deg,var(--accent),var(--accent-2),var(--accent))}.bubble > div{width:100%;height:100%;border-radius:50%;background:var(--card);display:grid;grid-template-rows:1fr 1fr;overflow:hidden;font:600 11px var(--mono);text-align:center}.bubble span{display:grid;place-items:center}.bubble span + span{border-top:1.5px solid var(--line-strong);font-size:9.5px;color:var(--muted)}.viewtitle h3{margin:0;font:700 26px/1.05 var(--display);color:var(--title);letter-spacing:.01em}.viewtitle p{margin:4px 0 0;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.turn{display:flex;gap:6px}.turn button{width:40px;height:40px;border:1px solid var(--line-strong);border-radius:12px;background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ink);transition:.15s}.turn button:hover{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink);border-color:transparent}.turn button:disabled{opacity:.35;cursor:default;background:var(--card);color:var(--ink);border-color:var(--line-strong)}.turn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4}.diagram-foot{margin:12px 0 0;font-size:13px;color:var(--muted)}.msg{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;font-size:13.5px;margin-bottom:14px;background:var(--accent-soft);border-radius:12px;color:var(--ink)}.msg.warn{background:var(--warn-soft)}.msg.err{background:var(--err-soft)}.msg svg{width:18px;height:18px;flex:none;margin-top:1px;color:var(--accent)}table.params{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden}table.params th{text-align:left;font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:10px 12px;background:var(--surface-2);border-bottom:1px solid var(--line)}table.params td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;background:var(--card)}table.params tr:last-child td{border-bottom:0}table.params tr.locked td{background:color-mix(in srgb,var(--accent-soft) 55%,var(--card))}.lockbtn{width:36px;height:36px;border:1px solid var(--line-strong);border-radius:11px;background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--faint);transition:.15s}.lockbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}.lockbtn:hover{border-color:var(--accent);color:var(--accent)}.lockbtn[aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--accent-ink);box-shadow:0 4px 12px -4px var(--accent)}.lockbtn.fixed{border-style:dashed;cursor:default;background:var(--surface-2);color:var(--ink)}.lockbtn.ro{visibility:hidden}.pname{width:100%;min-width:110px;border:0;border-bottom:1px dashed var(--line-strong);background:transparent;padding:3px 2px;font:700 16px var(--display);letter-spacing:.01em;color:var(--ink)}.pname:focus{border-bottom:1px solid var(--accent);outline:none}.ptype{font:500 10.5px var(--mono);color:var(--faint);padding:4px 2px 0;text-transform:uppercase;letter-spacing:.08em}.pval{width:100%;min-width:110px;border:1px solid var(--line-strong);border-radius:10px;padding:7px 10px;font:600 15px var(--mono);background:var(--card);color:var(--ink);text-align:right}.pval:focus{outline:2px solid var(--accent);outline-offset:-1px}.pval.computed{background:transparent;border-color:transparent}.pval[readonly]{color:var(--muted)}.pval.bad{border-color:var(--err);outline-color:var(--err)}.alt{font-size:11px;color:var(--faint);font-family:var(--mono);padding:3px 2px 0;text-align:right}.formula{display:flex;align-items:stretch;gap:6px}.formula code{flex:1;font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;word-break:break-word;white-space:pre-wrap;color:var(--ink)}.formula .eq{color:var(--accent);font:700 14px var(--mono);padding:8px 0 0}.formula .input-note{font-size:12.5px;color:var(--muted);padding-top:8px;font-style:italic}.copy{border:1px solid var(--line-strong);border-radius:10px;background:var(--card);padding:5px 11px;font:700 12.5px var(--display);letter-spacing:.08em;cursor:pointer;color:var(--ink);transition:.15s}.copy:hover{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink);border-color:transparent}.opts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 0}.notes{margin:18px 0 0;padding:14px 18px 6px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.notes h3{margin:0 0 8px;font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--title)}.notes ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}.notes li{margin-bottom:8px}section.block{padding:34px 0 6px}.block-h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:14px}.block-h .lbl{color:var(--title)}.block-h h2{margin:4px 0 0;font:700 30px/1 var(--display);color:var(--ink);letter-spacing:.01em}.block-h p{margin:6px 0 0;color:var(--muted);font-size:14px}.search{border:1px solid var(--line-strong);border-radius:12px;padding:9px 14px;font:14px var(--sans);background:var(--card);color:var(--ink);min-width:280px;box-shadow:var(--shadow)}.search:focus{outline:2px solid var(--accent);outline-offset:-1px}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.lib .card{padding:16px;display:flex;flex-direction:column;gap:8px;border-radius:16px}.lib .cat{font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}.lib h4{margin:0;font:700 17px var(--display);letter-spacing:.01em}.lib p{margin:0;color:var(--muted);font-size:13px}.ref{width:100%;border-collapse:collapse;font-size:14px}.ref th,.ref td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}.ref th{font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted);background:var(--surface-2)}.ref tr:last-child td{border-bottom:0}.ref td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--title)}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.two .card{overflow:hidden}.about{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;padding:26px}.about .avatar{--sz:112px}.about h3{margin:0;font:700 30px/1 var(--display);color:var(--title)}.about .role{color:var(--muted);margin:6px 0 12px;font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.08em}.about p.bio{margin:0 0 16px;max-width:70ch}.links{display:flex;gap:8px;flex-wrap:wrap}footer.foot{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between;padding:26px 0 34px;font:500 12px var(--mono);color:var(--muted)}footer.foot .fine{font-family:var(--sans);font-size:12px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:linear-gradient(100deg,var(--accent),var(--accent-2));color:var(--accent-ink);padding:9px 16px;border-radius:12px;font:700 14px var(--display);letter-spacing:.04em;opacity:0;transition:.2s;pointer-events:none;z-index:10;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translateX(-50%)}@media (max-width:1180px){header.top{grid-template-columns:minmax(0,1fr) auto}.brand{min-width:0}header.top .actions{grid-column:1 / -1;justify-content:flex-start;order:3}}@media (max-width:1000px){.solver{grid-template-columns:1fr}.two{grid-template-columns:1fr}}@media (max-width:640px){.page{padding:0 16px}header.top{grid-template-columns:1fr auto;gap:14px}.brand h1{font-size:30px}.prepared .t{display:none}.avatar{--sz:52px}.steps{display:none}.card-h,.card-b{padding-left:14px;padding-right:14px}.toolbar .badge{display:none}.units-pill .t{display:none}#printBtn,.toolbar .lbl,.toolbar .grow{display:none}table.params thead{display:none}table.params{border-radius:12px}table.params tr{display:grid;grid-template-columns:44px 1fr;gap:4px 8px;padding:12px;border-bottom:1px solid var(--line);background:var(--card)}table.params tr.locked{background:color-mix(in srgb,var(--accent-soft) 55%,var(--card))}table.params td{border:0;padding:0;background:transparent !important}table.params td.c-lock{grid-row:span 3}table.params td.c-formula{grid-column:2}.about{grid-template-columns:1fr}.search{min-width:0;width:100%}}@page{size:A4 portrait;margin:11mm 12mm 12mm}@media print{:root,:root[data-theme]{--bg:#ffffff;--bg-image:none;--card:#ffffff;--surface-2:#f5f5f4;--ink:#1b1b1b;--muted:#555555;--faint:#8a8a8a;--line:#dadada;--line-strong:#b8b8b8;--rule:#333333;--grid:#ececec;--shadow:none;color-scheme:light;--accent-soft:color-mix(in srgb,var(--accent) 13%,#ffffff);--geo-fill:color-mix(in srgb,var(--accent-2) 24%,#ffffff);--warn-soft:#fdebd3;--err-soft:#fde2e4;--title:color-mix(in srgb,var(--accent) 80%,#000000)}html,body{background:#ffffff !important}body{font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{max-width:none;padding:0}.actions,.toolbar,nav.tabs,.rule-glow,.steps,.status,.brand p,.turn,#resetBtn,#copyAll,.copy,.diagram-foot,#presets, #library,#reference,#about,.toast{display:none !important}header.top{grid-template-columns:1fr auto;gap:10px;padding:0 0 3mm;border-bottom:2px solid var(--accent);margin-bottom:4mm}.brand .kicker{font-size:8.5px}.brand h1{font-size:22px;margin:1px 0 0}.brand .subtitle{font-size:12px}.prepared .k{font-size:7.5px}.prepared b{font-size:14px}.prepared span{font-size:9.5px}.avatar{--sz:46px}.solver{grid-template-columns:1fr;gap:4mm}.card{box-shadow:none;border-radius:10px;break-inside:avoid}.card-h{padding:7px 12px;border-bottom-color:var(--line)}.card-h h2{font-size:16px}.card-h .sub{font-size:10px;margin:0}.card-b{padding:9px 12px 10px}.solver > .card:first-child .card-b{display:grid;grid-template-columns:108mm 1fr;grid-auto-rows:min-content;column-gap:6mm;align-items:start}.solver > .card:first-child .diagram{grid-row:1 / span 3}.diagram{border-radius:8px}.viewtitle{margin-top:0;gap:8px}.bubble{width:38px;height:38px}.bubble > div{font-size:9px}.bubble span + span{font-size:7.5px}.viewtitle h3{font-size:17px}.viewtitle p{font-size:8px}.notes{margin-top:6px;padding:7px 10px 1px;border-radius:8px}.notes h3{font-size:8px;margin-bottom:4px}.notes ul{font-size:9.5px;padding-left:14px}.notes li{margin-bottom:3px}.msg{font-size:10px;padding:6px 9px;margin-bottom:7px;border-radius:8px}.msg svg{width:13px;height:13px}table.params{font-size:11px;border-radius:8px}table.params th{padding:5px 8px;font-size:8px}table.params th:first-child{width:34px !important}table.params td{padding:6px 8px}table.params tr{break-inside:avoid}.lockbtn{width:24px;height:24px;border-radius:7px;box-shadow:none !important}.lockbtn svg{width:12px;height:12px}.pname{font-size:13px;min-width:0;padding:1px 2px}.ptype{font-size:7.5px;padding-top:2px}.pval{font-size:12px;padding:3px 6px;min-width:0;border-radius:6px}.alt{font-size:8px;padding-top:1px}.formula{gap:4px}.formula .eq{font-size:11px;padding-top:4px}.formula code{font-size:10px;padding:4px 7px;border-radius:6px}.formula .input-note{font-size:9.5px;padding-top:4px}.opts{margin-top:7px;gap:5px}.opts .lbl{font-size:8px}.chip{font-size:9px;padding:2px 7px;border-radius:6px}footer.foot{padding:4mm 0 0;margin-top:5mm;border-top:1px solid var(--line);font-size:8px;gap:2px 10px}footer.foot .fine{font-size:8px}}.diagram .earth{fill:color-mix(in srgb,var(--accent-2) 13%,var(--surface-2));stroke:none}.diagram .ground{fill:none;stroke:var(--rule);stroke-width:2.2;stroke-dasharray:11 6}.diagram .cutzone{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.3;stroke-dasharray:5 3}.diagram .fillzone{fill:var(--geo-fill);stroke:var(--ink);stroke-width:1.1;stroke-dasharray:5 3}.diagram .contour{stroke:var(--accent);stroke-width:1.8}.diagram .arrow{fill:var(--accent)}.diagram .zl{font:700 15px var(--mono);fill:var(--muted);letter-spacing:.14em}.diagram .pave{fill:var(--geo-fill);stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round}.diagram .surf{fill:none;stroke:var(--accent);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+:root{--ok:#15803d}:root[data-theme="night"],:root[data-theme="dark"],:root[data-theme="graphite"]{--ok:#4ade80}@media (prefers-color-scheme:dark){:root:not([data-theme]){--ok:#4ade80}}
+.std-pick select{min-width:230px}
+.badge.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,var(--line));font-weight:600}
+.badge.bad{color:var(--err);border-color:color-mix(in srgb,var(--err) 50%,var(--line));background:var(--err-soft);font-weight:600}
+.checks{margin:18px 0 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+.checks-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.checks-h h3{margin:0;font:700 18px/1.1 var(--display);color:var(--ink)}
+.checks-h .std{font:600 10.5px var(--mono);color:var(--title);text-transform:uppercase;letter-spacing:.1em}
+.checks-a{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.uses{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.uses .lbl{margin-right:4px}
+.chk{display:grid;grid-template-columns:28px minmax(0,.9fr) minmax(0,1.3fr);gap:6px 12px;padding:11px 14px;border-bottom:1px solid var(--line);align-items:start}
+.chk:last-child{border-bottom:0}
+.chk .st{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--mono)}
+.chk.pass .st{background:color-mix(in srgb,var(--ok) 16%,var(--card));color:var(--ok)}
+.chk.fail{background:color-mix(in srgb,var(--err-soft) 45%,var(--card))}
+.chk.fail .st{background:var(--err-soft);color:var(--err)}
+.chk.warn .st{background:var(--warn-soft);color:var(--warn)}
+.chk.info .st{background:var(--accent-soft);color:var(--accent)}
+.chk b{font:700 15.5px/1.2 var(--display);letter-spacing:.01em}
+.chk .lim{font:500 12px/1.4 var(--mono);color:var(--muted);margin-top:2px}
+.chk .ptype{padding:0 0 3px}
+.chk .formula code{font-size:12px;padding:6px 9px}
+.chk .msgline{font-size:13px;color:var(--muted);padding-top:3px}
+.src{display:inline-block;margin-top:5px;font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line-strong);color:var(--title);white-space:nowrap}
+.src.typ{color:var(--faint);border-style:dashed}
+.std-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:16px}
+.std-cards .card{padding:16px;display:flex;flex-direction:column;gap:9px;border-radius:16px}
+.std-cards .card.cur{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 28%,transparent),var(--shadow)}
+.std-cards .cat{font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}
+.std-cards h4{margin:0;font:700 18px var(--display);letter-spacing:.01em}
+.std-cards p{margin:0;color:var(--muted);font-size:13px;flex:1}
+.std-cards .search{min-width:0;width:100%;box-shadow:none;padding:7px 11px}
+.std-cards select{border:1px solid var(--line-strong);border-radius:10px;background:var(--card);color:var(--ink);font:600 12.5px var(--sans);padding:6px 8px;max-width:100%}
+.std-table td,.std-table th{padding:8px 12px}
+.std-table td.v{font-family:var(--mono);font-size:13px;white-space:nowrap}
+.std-table td.v .src{margin:0 0 0 7px;vertical-align:1px}
+.std-table .dash{color:var(--faint)}
+.std-table tr.grp td{background:var(--surface-2);font:700 14px var(--display);letter-spacing:.04em;color:var(--title);padding-top:10px}
+.std-table th.cur,.std-table td.cur{background:color-mix(in srgb,var(--accent-soft) 55%,transparent)}
+.std-table input{width:100%;min-width:110px;border:1px solid var(--line-strong);border-radius:8px;padding:5px 8px;font:600 13px var(--mono);background:var(--card);color:var(--ink);text-align:right}
+.std-table input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.std-table input.bad{border-color:var(--err)}
+.std-table input::placeholder{color:var(--faint);font-weight:500}
+.fine-note{color:var(--muted);font-size:12.5px;margin:12px 2px 0;max-width:110ch}
+@media (max-width:640px){.chk{grid-template-columns:28px 1fr}.chk > div:last-child{grid-column:1 / -1}.std-pick select{min-width:0}}
+@media print{#standards,.uses,[data-apply]{display:none !important}.checks{break-inside:avoid;margin-top:7px;border-radius:8px}.checks-h{padding:5px 9px}.checks-h h3{font-size:13px}.chk{padding:5px 9px;gap:3px 8px}.chk b{font-size:11.5px}.chk .lim,.chk .msgline{font-size:9px}.chk .st{width:18px;height:18px;font-size:10px}.chk .formula code{font-size:9px;padding:3px 6px}.src{font-size:7.5px}}
+@media (max-width:640px){.status{white-space:normal;border-radius:12px;max-width:100%}}
+.toast{max-width:min(92vw,560px);text-align:center;line-height:1.35}
+.chk.nof{grid-template-columns:28px minmax(0,1fr)}
+.chip.fx{font-size:12px;padding:7px 11px}
+.revit .chk.rv .st{background:var(--accent-soft);color:var(--title);font-size:12px}
+.revit .chk{grid-template-columns:28px minmax(0,1.4fr) minmax(0,.9fr)}
+.revit .ptype{padding:0 0 2px}
+.rvv{display:flex;gap:6px;align-items:flex-start;justify-content:flex-end}
+.rvv code{font:600 13.5px var(--mono);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--ink);word-break:break-word;text-align:right}
+.lvl{display:flex;align-items:center;gap:8px}.lvl .pval{width:130px;min-width:0;padding:5px 9px;font-size:13.5px}
+table.params.nofx td.c-val{width:38%}
+@media (max-width:640px){.revit .chk{grid-template-columns:28px 1fr}.rvv{grid-column:1 / -1;justify-content:flex-start}.lvl{width:100%}}
+@media print{.chip.fx,.lvl{display:none !important}.rvv code{font-size:10px;padding:3px 6px}.revit .ptype{font-size:7.5px}}
+</style></head><body><div class="page"><header class="top"><div class="brand"><div class="kicker" id="kicker"></div><h1 id="appName">Grading Slope Solver</h1><div class="subtitle" id="appSubtitle"></div><p id="appTagline"></p><span class="status" id="status"><i></i><span></span></span></div><div class="actions"><a class="btn primary" href="#standards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Standards</a><a class="btn" href="#reference">Slope table</a><a class="btn" href="#library">Formula library</a><button class="btn" id="printBtn" type="button">Print</button></div><a class="prepared" href="#about" id="authorChip"></a></header><div class="toolbar"><div class="units-pill"><span class="ic" aria-hidden="true">📐</span><span class="t"><b>Units</b><span>display &amp; typing</span></span><div class="seg" id="units" role="group" aria-label="Display units"></div></div><div class="theme-pick std-pick"><span class="lbl">Standard</span><select id="stdSel" aria-label="Grading standard to check against"></select></div><span class="badge" title="Your values, names and theme are saved only in this browser">🔒 Runs in your browser · nothing uploaded</span><button class="btn sm" id="clearBtn" type="button" title="Forget saved values, names and theme">Clear saved settings</button><span class="grow"></span><span class="lbl">Theme</span><div class="theme-pick"><span class="theme-dots" id="themeDots" aria-hidden="true"></span><select id="themeSel" aria-label="Colour theme"></select><button class="theme-cycle" id="themeNext" title="Next theme" aria-label="Next theme"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></button></div></div><nav class="tabs" id="tabs" role="tablist" aria-label="Solvers"></nav><div class="rule-glow"></div><div class="steps" aria-label="How it works"><span><b>1</b>Pick a grading solver</span><span><b>2</b>Turn the ring to the values you know</span><span><b>3</b>Type their values</span><span><b>4</b>Check them against a standard</span><span><b>5</b>Type the values into Revit</span></div><div class="solver" id="solver"><div class="card"><div class="card-h"><div><h2 id="sTitle"></h2><p class="sub" id="sSub"></p></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><span id="sStd"></span><span class="badge" id="sCode"></span></div></div><div class="card-b"><svg class="diagram dial" id="diagram" viewBox="0 0 880 880" role="group" aria-label="Drawing and selector ring"></svg><div class="viewtitle"><div class="bubble" aria-hidden="true"><div><span id="vtNum"></span><span id="vtCode"></span></div></div><div><h3 id="vtTitle"></h3><p id="vtSub"></p></div><div class="turn"><button id="turnPrev" title="Turn the ring back" aria-label="Previous combination"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button id="turnNext" title="Turn the ring forward" aria-label="Next combination"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div></div><p class="diagram-foot">Turn the ring to pick the values you know, or click a tag in the drawing to lock or unlock it. Shallow slopes are drawn with vertical exaggeration so you can see them; every value shown is true. Not a construction drawing.</p><div class="notes" id="notes"></div></div></div><div class="card"><div class="card-h"><div><h2 id="pTitle">Values</h2><p class="sub" id="pSub"></p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip fx" id="fxBtn" aria-pressed="false" title="Show formulas for building a parametric Revit family"><span>Family formulas: off</span></button><button class="btn" id="resetBtn" title="Restore this solver's defaults">Reset</button><button class="btn primary" id="copyAll" title="Copy the values, the Revit steps and the standards check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy all</button></div></div><div class="card-b"><div id="msg"></div><table class="params"><thead id="phead"></thead><tbody id="rows"></tbody></table><div id="opts"></div><div id="presets"></div><div id="revit"></div><div id="checks"></div></div></div></div><main><section class="block" id="standards"><div class="block-h"><div><span class="lbl">Standards</span><h2>Grading standards</h2><p>The limits every solver checks against. Pick one here or in the toolbar, or type your own authority&rsquo;s values in the last column.</p></div></div><div class="std-cards" id="stdCards"></div><div class="card" style="overflow-x:auto"><table class="ref std-table" id="stdTable"></table></div><p class="fine-note">Limits are summarised from the published documents for quick checking: 2010 ADA Standards for Accessible Design, IBC 2021, Approved Document M (England) and BS 8300-1. A dash means the standard sets no limit there, so typical practice is used and labelled &ldquo;Typical practice&rdquo;. Always confirm against the current edition and your authority&rsquo;s requirements. This tool is not a substitute for a code review.</p></section><section class="block" id="library"><div class="block-h"><div><span class="lbl">Library</span><h2>Grading formula library</h2><p>The maths behind grading, drainage and earthworks, written in Revit formula syntax for parametric families. It reads like plain maths, so it works as a quick reference too.</p></div><input class="search" id="libSearch" type="search" placeholder="Search formulas…" aria-label="Search formulas"></div><div class="filters" id="libFilters"></div><div class="lib" id="lib"></div></section><section class="block" id="reference"><div class="block-h"><div><span class="lbl">Reference</span><h2>Slope table &amp; functions</h2><p>The same slope written every way, and what the Revit formula editor understands.</p></div></div><div class="two"><div class="card" style="overflow-x:auto"><table class="ref" id="refSlopes"></table></div><div class="card" style="overflow-x:auto"><table class="ref" id="refFns"></table></div></div></section><section class="block" id="about"><div class="block-h"><div><span class="lbl">Author</span><h2>About the author</h2></div></div><div class="card about" id="aboutCard"></div></section></main><footer class="foot"><span><span id="footLeft"></span> · Grading Slope Solver · 🔒 runs in your browser · prepared by <span id="tbName"></span>, <span id="tbTitle"></span> · <span id="tbLoc"></span> · <span id="tbDate"></span></span><span class="fine">Revit is a trademark of Autodesk, Inc. This tool is independent and not affiliated with Autodesk. Typical values are guidance only: always check your project's standards and your own model.</span></footer></div><div class="toast" id="toast" role="status" aria-live="polite"></div><script>
+/* =====================================================================
+   EDIT YOUR DETAILS HERE — everything on the page reads from PROFILE.
+   Leave a field as "" to hide it.
+   ===================================================================== */
+const PROFILE = {
+  name:     "Gouse Shaik",
+  title:    "BIM Manager",
+  company:  "MSCEB",
+  department: "BIM Structural Department",   // shown above the title
+  photo:    "https://gs-786.github.io/Revit-Formula-Solver/photo.jpg", // or "photo.jpg" kept next to index.html ("" shows your initials)
+  location: "Bahrain",
+  bio:      "I'm a BIM Manager at MSCEB in Bahrain. I made this free solver so anyone grading a site can get grades, spot levels, daylight offsets and ramp runs as correct formulas in seconds instead of working them out by hand.",
+  email:    "gouse.shaik@msceb.com",
+  email2:   "bim.gouseshaik@gmail.com",
+  phone:    "",
+  linkedin: "https://www.linkedin.com/in/gouse-shaik-360b82143/",
+  github:   "https://github.com/GS-786",
+  website:  "",
+  sister:   "https://gs-786.github.io/Revit-Formula-Solver/",   // link to the Revit Formula Solver ("" hides it)
+};
+const APP = {
+  name:    "Grading Slope Solver",
+  subtitle:"Site grading & slope formulas",
+  tagline: "Lock the values you know. Get grades, levels, contours and batters, checked against a standard, with exactly what to type into Revit.",
+};
+/* ===================================================================== */
+
+const D2R = Math.PI / 180;
+const EPS = 1e-9;
+const M = x => x / 0.3048;           // metres → feet (all lengths are stored in feet, like Revit)
+
+/* ---------- units ---------- */
+const UNITS = [
+  {id:"m", label:"m"}, {id:"mm", label:"mm"}, {id:"ft", label:"ft"}, {id:"ftin", label:"ft-in"}, {id:"in", label:"in"},
+];
+const gcd = (a,b) => b ? gcd(b, a % b) : a;
+const trim = (n, d) => { const s = (+n).toFixed(d); return s.includes(".") ? s.replace(/\.?0+$/, "") : s; };
+
+function fmtFtIn(ft){
+  if (!isFinite(ft)) return "—";
+  const neg = ft < 0, totalIn = Math.abs(ft) * 12, den = 32;
+  let n = Math.round(totalIn * den);
+  const approx = Math.abs(n / den - totalIn) > 1e-6;
+  const feet = Math.floor(n / (12 * den)); n -= feet * 12 * den;
+  const whole = Math.floor(n / den); const frac = n - whole * den;
+  let f = ""; if (frac){ const g = gcd(frac, den); f = `${frac/g}/${den/g}`; }
+  const inch = whole && f ? `${whole} ${f}` : whole ? `${whole}` : f ? f : "0";
+  const body = feet ? `${feet}' ${inch}"` : `${inch}"`;
+  return (approx ? "≈ " : "") + (neg ? "−" : "") + body;
+}
+function fmtLen(ft, unit){
+  if (!isFinite(ft)) return "—";
+  const neg = ft < -EPS ? "−" : ""; const a = Math.abs(ft);
+  switch (unit){
+    case "ftin": return fmtFtIn(ft);
+    case "in": return neg + trim(a * 12, 4) + '"';
+    case "ft": return neg + trim(a, 4) + "'";
+    case "mm": return neg + trim(a * 304.8, 1) + " mm";
+    case "m":  return neg + trim(a * 0.3048, 4) + " m";
+  }
+}
+function fmtVal(p, v, unit){
+  if (p.t === "bool") return v === true ? "Yes" : v === false ? "No" : "—";
+  if (v === undefined || v === null || !isFinite(v)) return "—";
+  if (p.t === "len") return fmtLen(v, unit);
+  if (p.t === "ang") return trim(v, 3) + "°";
+  if (p.t === "int") return String(Math.round(v));
+  if (p.t === "pct") return (v < -EPS ? "−" : "") + trim(Math.abs(v), 3) + "%";
+  if (p.t === "ratio") return trim(v, 3) + "H:1V";
+  return trim(v, 4);
+}
+function altVal(p, v, unit){
+  if (p.t === "bool" || !isFinite(v)) return "";
+  if (p.t === "len") return (unit === "mm" || unit === "m") ? trim(v, 4) + " ft" : trim(v * 0.3048, 4) + " m";
+  if (p.t === "pct"){ const a = Math.abs(v); return a < EPS ? "level" : `${trim(Math.atan(a / 100) / D2R, 3)}° · 1 in ${trim(100 / a, 2)}${v < 0 ? " · falling" : ""}`; }
+  if (p.t === "ratio" && v > 0) return `${trim(100 / v, 3)}% · ${trim(Math.atan(1 / v) / D2R, 3)}°`;
+  if (p.t === "ang" && v > 0 && v < 90) return `${trim(Math.tan(v * D2R) * 100, 3)}% · 1 in ${trim(1 / Math.tan(v * D2R), 2)}`;
+  return "";
+}
+function parseMixed(s){
+  s = s.trim(); if (!s) return NaN;
+  let m;
+  if ((m = s.match(/^(-?\d+(?:\.\d+)?)\s+(\d+)\/(\d+)$/))) { const w = +m[1]; return w + Math.sign(w || 1) * (+m[2] / +m[3]); }
+  if ((m = s.match(/^(-?\d+)\/(\d+)$/))) return +m[1] / +m[2];
+  if (/^-?(\d+\.?\d*|\.\d+)$/.test(s)) return +s;
+  return NaN;
+}
+function parseLen(raw, unit){
+  let s = String(raw).trim().toLowerCase().replace(/[’′‘`]/g, "'").replace(/[”″“]/g, '"').replace(/−/g, "-").replace(/,/g, "");
+  if (!s) return NaN;
+  let m;
+  if ((m = s.match(/^(-?[\d.]+)\s*mm$/))) return +m[1] / 304.8;
+  if ((m = s.match(/^(-?[\d.]+)\s*cm$/))) return +m[1] / 30.48;
+  if ((m = s.match(/^(-?[\d.]+)\s*m$/)))  return +m[1] / 0.3048;
+  if ((m = s.match(/^(-?[\d.]+)\s*(ft|feet|foot)$/))) return +m[1];
+  if ((m = s.match(/^(-?[\d.\s/]+?)\s*(in|inch|inches)$/))) return parseMixed(m[1]) / 12;
+  if (s.includes("'") || s.includes('"')){
+    let neg = false; if (s.startsWith("-")){ neg = true; s = s.slice(1); }
+    let feet = 0, inches = 0; const fi = s.indexOf("'");
+    if (fi >= 0){ feet = parseMixed(s.slice(0, fi)); s = s.slice(fi + 1); }
+    s = s.replace(/^[\s-]+/, "").replace(/"\s*$/, "").trim();
+    if (s){ s = s.replace(/(\d)-(\d)/, "$1 $2"); inches = parseMixed(s); }
+    const v = feet + inches / 12; return neg ? -v : v;
+  }
+  const v = parseMixed(s);
+  switch (unit){
+    case "ftin": case "ft": return v;   // a bare number is feet, like Revit
+    case "in": return v / 12;
+    case "mm": return v / 304.8;
+    case "m":  return v / 0.3048;
+  }
+  return v;
+}
+// "3:1", "1:3", "3H:1V", "1 in 50" → horizontal per 1 vertical (the larger side over the smaller)
+function parseRatio(raw){
+  let s = String(raw).trim().toLowerCase().replace(/−/g, "-").replace(/[hv\s]/g, "").replace(/in/g, ":");
+  let neg = false; if (s.startsWith("-")){ neg = true; s = s.slice(1); }
+  const m = s.match(/^(\d*\.?\d+):(\d*\.?\d+)$/); if (!m) return NaN;
+  const a = +m[1], b = +m[2]; if (!(a > 0 && b > 0)) return NaN;
+  const r = Math.max(a, b) / Math.min(a, b); return neg ? -r : r;
+}
+function parseVal(p, raw, unit){
+  if (p.t === "len") return parseLen(raw, unit);
+  const s = String(raw).replace(/−/g, "-");
+  if (p.t === "ratio"){ const r = parseRatio(s); return isFinite(r) ? Math.abs(r) : parseMixed(s.replace(/[hv]/gi, "").trim()); }
+  if (p.t === "pct"){ const r = parseRatio(s); if (isFinite(r)) return 100 / r; }
+  const v = parseMixed(s.replace(/[°%]/g, ""));
+  return p.t === "int" ? Math.round(v) : v;
+}
+
+/* ---------- solver definitions ----------
+   params: id, n (default Revit name), t (len|ang|int|num|pct|ratio|bool), fixed (always an input), ro (always computed)
+   modes:  locks (input ids), solve(v, opt) -> computed values, f -> formula templates using {id}
+------------------------------------------- */
+const need = (ok, msg) => { if (!ok) throw msg; };
+const angOK = A => need(A > 0 && A < 90, "The slope angle must be between 0° and 90°.");
+const grOK  = G => need(G > 0, "Grade must be greater than 0%.");
+const ratOK = N => need(N > 0, "Slope Ratio must be greater than 0.");
+const SLOPE_FROM_G = { A:"atan({G} / 100)", N:"100 / {G}" };
+
+const SOLVERS = [
+{
+  id:"slope", code:"G-01", name:"Slope",
+  sub:"One slope, every way: rise & run, grade %, angle and H:V ratio.",
+  lockCount:2, uses:["paved","lawn","planting","swale","walk","ramp","parking","bay","road","building","buildingPaved","bankMowed","bankPlanted"], defaultUse:"paved",
+  params:[
+    {id:"a", n:"Run", t:"len"}, {id:"b", n:"Rise", t:"len"}, {id:"G", n:"Grade", t:"pct"},
+    {id:"A", n:"Slope Angle", t:"ang"}, {id:"N", n:"Slope Ratio", t:"ratio"}, {id:"c", n:"Slope Length", t:"len", ro:true},
+  ],
+  defaults:{ locks:["a","G"], vals:{ a:M(20), b:M(0.4), G:2, A:1.146, N:50 } },
+  modes:[
+    { locks:["a","b"], solve:v=>({ G:v.b/v.a*100, A:Math.atan(v.b/v.a)/D2R, N:v.a/v.b }),
+      f:{ G:"{b} / {a} * 100", A:"atan({b} / {a})", N:"{a} / {b}" } },
+    { locks:["a","G"], solve:v=>{ grOK(v.G); return { b:v.a*v.G/100, A:Math.atan(v.G/100)/D2R, N:100/v.G }; },
+      f:{ b:"{a} * {G} / 100", ...SLOPE_FROM_G } },
+    { locks:["a","A"], solve:v=>{ angOK(v.A); const t=Math.tan(v.A*D2R); return { b:v.a*t, G:t*100, N:1/t }; },
+      f:{ b:"{a} * tan({A})", G:"tan({A}) * 100", N:"1 / tan({A})" } },
+    { locks:["a","N"], solve:v=>{ ratOK(v.N); return { b:v.a/v.N, G:100/v.N, A:Math.atan(1/v.N)/D2R }; },
+      f:{ b:"{a} / {N}", G:"100 / {N}", A:"atan(1 / {N})" } },
+    { locks:["b","G"], solve:v=>{ grOK(v.G); return { a:v.b*100/v.G, A:Math.atan(v.G/100)/D2R, N:100/v.G }; },
+      f:{ a:"{b} * 100 / {G}", ...SLOPE_FROM_G } },
+    { locks:["b","A"], solve:v=>{ angOK(v.A); const t=Math.tan(v.A*D2R); return { a:v.b/t, G:t*100, N:1/t }; },
+      f:{ a:"{b} / tan({A})", G:"tan({A}) * 100", N:"1 / tan({A})" } },
+    { locks:["b","N"], solve:v=>{ ratOK(v.N); return { a:v.b*v.N, G:100/v.N, A:Math.atan(1/v.N)/D2R }; },
+      f:{ a:"{b} * {N}", G:"100 / {N}", A:"atan(1 / {N})" } },
+  ],
+  extra:{ c:{ calc:v=>Math.hypot(v.a,v.b), f:"sqrt({a} ^ 2 + {b} ^ 2)" } },
+  validate:v=> (v.a<=0||v.b<=0) ? "Run and Rise must be greater than zero." : (v.A<=0||v.A>=90) ? "The slope angle must be between 0° and 90°." : null,
+  presets:[
+    { label:"Paving 1%", vals:{ G:1 } }, { label:"Lawn 2%", vals:{ G:2 } }, { label:"Path 1:20", vals:{ N:20 } },
+    { label:"Ramp 1:12", vals:{ N:12 } }, { label:"Bank 4:1", vals:{ N:4 } }, { label:"Bank 3:1", vals:{ N:3 } }, { label:"Fill 2:1", vals:{ N:2 } },
+  ],
+  applyPreset(st, pr){ SOLVERS[0].onType(st, Object.keys(pr.vals)[0]); },
+  // typing a slope (grade, angle or ratio) keeps the known length; typing a length keeps the known slope
+  onType(st, id){
+    const lens = ["a","b"], slopes = ["G","A","N"];
+    const len = lens.find(l => st.locks.includes(l)) || "a", slope = slopes.find(l => st.locks.includes(l));
+    if (slopes.includes(id)) st.locks = [len, id];
+    else st.locks = [id, slope || lens.find(l => l !== id && st.locks.includes(l)) || "G"];
+  },
+  notes:[
+    "Grade % = Rise ÷ Run × 100. A 2% grade falls 1 in 50; 100% is 45°.",
+    "Slope Ratio is horizontal per 1 vertical: 3 means 3H:1V, also written 1 in 3 or 1:3. You can type 3, 3:1, 1:3 or 1 in 3.",
+    "You can also type a grade as a ratio: 1:50 or 1 in 50 becomes 2%.",
+    "Grade and Slope Ratio are Number parameters; Slope Angle is an Angle parameter. Run is measured on plan.",
+  ],
+},
+{
+  id:"spot", code:"G-02", name:"Spot Levels",
+  sub:"Start level, end level, plan distance and the grade between them.",
+  lockCount:3, uses:["paved","lawn","planting","swale","walk","ramp","parking","bay","road","building","buildingPaved","bankMowed","bankPlanted"], defaultUse:"paved",
+  params:[
+    {id:"E1", n:"Start Level", t:"len"}, {id:"E2", n:"End Level", t:"len"}, {id:"D", n:"Distance", t:"len"},
+    {id:"G", n:"Grade", t:"pct"}, {id:"X", n:"Level Difference", t:"len", ro:true},
+  ],
+  defaults:{ locks:["E1","D","G"], vals:{ E1:M(10), E2:M(9.325), D:M(45), G:-1.5 } },
+  modes:[
+    { locks:["E1","D","G"], solve:v=>({ E2:v.E1 + v.D*v.G/100 }), f:{ E2:"{E1} + {D} * {G} / 100" } },
+    { locks:["E1","E2","D"], solve:v=>{ need(v.D>0, "Distance must be greater than zero."); return { G:(v.E2-v.E1)/v.D*100 }; }, f:{ G:"({E2} - {E1}) / {D} * 100" } },
+    { locks:["E1","E2","G"], solve:v=>{
+        need(Math.abs(v.G) > EPS, "A level grade never gets from one level to another. Enter a grade other than 0%.");
+        const D=(v.E2-v.E1)*100/v.G;
+        need(D > EPS, v.E2 > v.E1 ? "The end is higher than the start, so the grade must be positive (rising)." : "The end is lower than the start, so the grade must be negative (falling).");
+        return { D }; },
+      f:{ D:"({E2} - {E1}) * 100 / {G}" } },
+    { locks:["E2","D","G"], solve:v=>({ E1:v.E2 - v.D*v.G/100 }), f:{ E1:"{E2} - {D} * {G} / 100" } },
+  ],
+  extra:{ X:{ calc:v=>v.E2-v.E1, f:"{E2} - {E1}" } },
+  validate:v=> (v.D<=0) ? "Distance must be greater than zero." : null,
+  presets:[
+    { label:"Fall 1%", vals:{ G:-1 } }, { label:"Fall 2%", vals:{ G:-2 } }, { label:"Fall 1 in 80", vals:{ G:-1.25 } },
+    { label:"Rise 1 in 20", vals:{ G:5 } },
+  ],
+  notes:[
+    "Grade is signed: positive rises from Start to End, negative falls.",
+    "Distance is measured on plan (horizontal), not along the slope.",
+    "Use it for spot levels along swales, kerbs, paths, channels and pipe inverts.",
+    "Type a grade as -1:50 or -1 in 50 for a 2% fall.",
+  ],
+},
+{
+  id:"contours", code:"G-03", name:"Contours",
+  sub:"Which contours cross between two spot levels, and where.",
+  lockCount:0, uses:["paved","lawn","planting","swale","walk","ramp","parking","bay","road","building","buildingPaved","bankMowed","bankPlanted"], defaultUse:"lawn",
+  params:[
+    {id:"L", n:"Low Level", t:"len", fixed:true}, {id:"H", n:"High Level", t:"len", fixed:true},
+    {id:"D", n:"Distance", t:"len", fixed:true}, {id:"I", n:"Contour Interval", t:"len", fixed:true},
+    {id:"G", n:"Grade", t:"pct", ro:true}, {id:"S", n:"Contour Spacing", t:"len", ro:true},
+    {id:"F", n:"First Contour", t:"len", ro:true}, {id:"C", n:"Last Contour", t:"len", ro:true},
+    {id:"N", n:"Contour Count", t:"int", ro:true}, {id:"P", n:"Offset to First", t:"len", ro:true},
+  ],
+  defaults:{ locks:["L","H","D","I"], vals:{ L:M(10.3), H:M(14.85), D:M(60), I:M(0.5) } },
+  modes:[
+    { locks:["L","H","D","I"], solve:v=>{
+        need(v.H > v.L, "High Level must be above Low Level.");
+        need(v.D > 0 && v.I > 0, "Distance and Contour Interval must be greater than zero.");
+        const h=v.H-v.L, F=Math.ceil(v.L/v.I-0.0001)*v.I, C=Math.floor(v.H/v.I+0.0001)*v.I;
+        return { G:h/v.D*100, S:v.I/h*v.D, F, C, N:Math.max(0, Math.round((C-F)/v.I)+1), P:(F-v.L)/h*v.D }; },
+      f:{ G:"({H} - {L}) / {D} * 100", S:"{I} / ({H} - {L}) * {D}", F:"roundup({L} / {I} - 0.0001) * {I}",
+          C:"rounddown({H} / {I} + 0.0001) * {I}", N:"round(({C} - {F}) / {I}) + 1", P:"({F} - {L}) / ({H} - {L}) * {D}" } },
+  ],
+  check:v=> v.N < 1 ? "No contour falls between these two levels. Use a smaller Contour Interval." : v.N > 300 ? "That's a lot of contours. Check the Contour Interval." : null,
+  presets:[
+    { label:"0.1 m", vals:{ I:M(0.1) } }, { label:"0.25 m", vals:{ I:M(0.25) } }, { label:"0.5 m", vals:{ I:M(0.5) } }, { label:"1 m", vals:{ I:M(1) } },
+    { label:"1 ft", vals:{ I:1 } }, { label:"2 ft", vals:{ I:2 } }, { label:"5 ft", vals:{ I:5 } },
+  ],
+  notes:[
+    "Contours are the whole multiples of the interval between the low and the high level.",
+    "Offset to First and Contour Spacing are plan distances measured from the low point.",
+    "A level that sits exactly on a contour counts. The ± 0.0001 stops rounding error from skipping it.",
+    "Contour Count is 0 when no contour crosses. Make it an Integer parameter.",
+  ],
+},
+{
+  id:"daylight", code:"G-04", name:"Cut & Fill Batter",
+  sub:"Daylight a cut or fill slope from a design edge to existing ground.",
+  lockCount:0,
+  params:[
+    {id:"P", n:"Design Level", t:"len", fixed:true}, {id:"E", n:"Existing Ground", t:"len", fixed:true},
+    {id:"g", n:"Ground Slope", t:"pct", fixed:true}, {id:"Cr", n:"Cut Slope", t:"ratio", fixed:true}, {id:"Fr", n:"Fill Slope", t:"ratio", fixed:true},
+    {id:"K", n:"Is Cut", t:"bool", ro:true}, {id:"O", n:"Daylight Offset", t:"len", ro:true}, {id:"H", n:"Batter Height", t:"len", ro:true},
+    {id:"L", n:"Batter Length", t:"len", ro:true}, {id:"Z", n:"Daylight Level", t:"len", ro:true},
+  ],
+  defaults:{ locks:["P","E","g","Cr","Fr"], vals:{ P:M(12), E:M(13.4), g:0, Cr:2, Fr:3 } },
+  modes:[
+    { locks:["P","E","g","Cr","Fr"], solve:v=>{
+        need(v.Cr > 0 && v.Fr > 0, "Cut Slope and Fill Slope must be greater than zero.");
+        const gr=v.g/100, K=v.E > v.P; let O;
+        if (K){ const den=1-gr*v.Cr; need(den > EPS, "The cut slope never meets the ground: the ground rises away from the edge as steeply as the cut slope, or more. Use a steeper cut slope or a retaining wall."); O=(v.E-v.P)*v.Cr/den; }
+        else { const den=1+gr*v.Fr; need(den > EPS, "The fill slope never meets the ground: the ground falls away from the edge as steeply as the fill slope, or more. Use a steeper fill slope or a retaining wall."); O=(v.P-v.E)*v.Fr/den; }
+        const H=K ? O/v.Cr : O/v.Fr;
+        return { K, O, H, L:Math.hypot(O,H), Z:K ? v.P+H : v.P-H }; },
+      f:{ K:"{E} > {P}", O:"if({K}, ({E} - {P}) * {Cr} / (1 - {g} / 100 * {Cr}), ({P} - {E}) * {Fr} / (1 + {g} / 100 * {Fr}))",
+          H:"if({K}, {O} / {Cr}, {O} / {Fr})", L:"sqrt({H} ^ 2 + {O} ^ 2)", Z:"if({K}, {P} + {H}, {P} - {H})" } },
+  ],
+  check:v=> v.O < 1e-6 ? "The design edge sits on existing ground, so no batter is needed." : null,
+  presets:[
+    { label:"Cut 2:1 · Fill 3:1", vals:{ Cr:2, Fr:3 } }, { label:"Cut 1.5:1 · Fill 2:1", vals:{ Cr:1.5, Fr:2 } },
+    { label:"Mowable 4:1", vals:{ Cr:4, Fr:4 } }, { label:"Rock cut 0.5:1", vals:{ Cr:0.5 } },
+  ],
+  notes:[
+    "Cut when existing ground is above the design edge, fill when it is below. Is Cut is a Yes/No parameter.",
+    "Cut Slope and Fill Slope are horizontal per 1 vertical: a 2 cut slope is 2H:1V.",
+    "Ground Slope is the cross slope of existing ground going away from the edge: positive rises, negative falls. 0% is level ground.",
+    "Existing Ground is the ground level at the design edge (the hinge point). Daylight is where the batter meets it.",
+    "Cut and fill limits come from the chosen standard. Steep batters still need a geotechnical check.",
+  ],
+},
+{
+  id:"crossfall", code:"G-05", name:"Cross Fall",
+  sub:"Roads, paths and pads: width, cross fall and edge level.",
+  lockCount:2, uses:["road","paved","parking","bay","walk"], defaultUse:"road",
+  params:[
+    {id:"C", n:"High Point Level", t:"len", fixed:true}, {id:"W", n:"Width", t:"len"}, {id:"S", n:"Cross Fall", t:"pct"},
+    {id:"D", n:"Fall", t:"len"}, {id:"E", n:"Edge Level", t:"len", ro:true},
+  ],
+  defaults:{ locks:["C","W","S"], vals:{ C:M(15), W:M(7.3), S:2.5, D:M(0.09125) }, opt:{ profile:"crowned" } },
+  options:{ profile:{ label:"Profile", choices:[ {v:"crowned",label:"Crowned"}, {v:"oneway",label:"One-way"} ] } },
+  modes:[
+    { locks:["C","W","S"], usesOpt:["profile"], solve:(v,o)=>({ D:(o.profile==="oneway" ? v.W : v.W/2)*v.S/100 }),
+      f:o=>({ D: o.profile==="oneway" ? "{W} * {S} / 100" : "{W} / 2 * {S} / 100" }) },
+    { locks:["C","W","D"], usesOpt:["profile"], solve:(v,o)=>({ S:v.D/(o.profile==="oneway" ? v.W : v.W/2)*100 }),
+      f:o=>({ S: o.profile==="oneway" ? "{D} / {W} * 100" : "{D} / ({W} / 2) * 100" }) },
+    { locks:["C","D","S"], usesOpt:["profile"], solve:(v,o)=>{ grOK(v.S); return { W:v.D*100/v.S*(o.profile==="oneway" ? 1 : 2) }; },
+      f:o=>({ W: o.profile==="oneway" ? "{D} * 100 / {S}" : "2 * {D} * 100 / {S}" }) },
+  ],
+  extra:{ E:{ calc:v=>v.C-v.D, f:"{C} - {D}" } },
+  validate:v=> (v.W<=0||v.D<=0) ? "Width and Fall must be greater than zero." : (v.S<=0) ? "Cross Fall must be greater than 0%." : null,
+  presets:[
+    { label:"Road 2.5%", vals:{ S:2.5 } }, { label:"Road 2%", vals:{ S:2 } }, { label:"Footpath 2%", vals:{ S:2 } },
+    { label:"Car park 1.5%", vals:{ S:1.5 } }, { label:"Sports pitch 1%", vals:{ S:1 } },
+  ],
+  applyPreset(st){ st.locks = ["C","W","S"]; },
+  notes:[
+    "Crowned: the surface falls both ways from the centre, so each side falls over half the width. One-way: it falls across the full width.",
+    "Fall is the height between the high point (crown or high edge) and the low edge.",
+    "Turn the ring to choose crowned or one-way, or use the Profile buttons.",
+    "Choose the Surface use under Standards check: roads, paths, parking and accessible bays have different cross fall limits.",
+  ],
+},
+{
+  id:"ramp", code:"G-06", name:"Site Ramp",
+  sub:"Runs, landings and length for a ramp from a total rise.",
+  lockCount:0,
+  params:[
+    {id:"H", n:"Total Rise", t:"len", fixed:true}, {id:"G", n:"Max Grade", t:"pct", fixed:true},
+    {id:"M", n:"Max Rise per Run", t:"len", fixed:true}, {id:"L", n:"Landing Length", t:"len", fixed:true},
+    {id:"N", n:"Run Count", t:"int", ro:true}, {id:"R", n:"Rise per Run", t:"len", ro:true}, {id:"U", n:"Run Length", t:"len", ro:true},
+    {id:"T", n:"Total Length", t:"len", ro:true}, {id:"A", n:"Slope Angle", t:"ang", ro:true}, {id:"K", n:"Slope Ratio", t:"ratio", ro:true},
+  ],
+  defaults:{ locks:["H","G","M","L"], vals:{ H:M(1.2), G:100/12, M:M(0.75), L:M(1.5) } },
+  modes:[
+    { locks:["H","G","M","L"], solve:v=>{
+        need(v.H > 0 && v.G > 0 && v.M > 0 && v.L >= 0, "Total Rise, Max Grade and Max Rise per Run must be greater than zero.");
+        const N=Math.ceil(v.H/v.M-0.0001), R=v.H/N, U=R*100/v.G;
+        return { N, R, U, T:N*U+(N-1)*v.L, A:Math.atan(v.G/100)/D2R, K:100/v.G }; },
+      f:{ N:"roundup({H} / {M} - 0.0001)", R:"{H} / {N}", U:"{R} * 100 / {G}", T:"{N} * {U} + ({N} - 1) * {L}",
+          A:"atan({G} / 100)", K:"100 / {G}" } },
+  ],
+  presets:[
+    { label:"1:12 · 750 mm · 1.5 m", vals:{ G:100/12, M:M(0.75), L:M(1.5) } },
+    { label:"1:12 · 30\" · 5'", vals:{ G:100/12, M:2.5, L:5 } },
+    { label:"1:15 · 333 mm · 1.5 m", vals:{ G:100/15, M:M(0.333), L:M(1.5) } },
+    { label:"1:20 · 500 mm · 1.5 m", vals:{ G:5, M:M(0.5), L:M(1.5) } },
+  ],
+  notes:[
+    "All four inputs are always locked: the total rise, the steepest grade allowed, the most a single run may climb, and the landing length.",
+    "Run Count rounds up so no run climbs more than the maximum.",
+    "Run Length is the plan length of one run at the maximum grade. Total Length includes the landings between runs, not the top and bottom landings.",
+    "Pick a standard in the toolbar to check grade, rise, run length and landings, or press “Use these limits” to set the inputs from it.",
+  ],
+},
+];
+const byId = Object.fromEntries(SOLVERS.map(s => [s.id, s]));
+SOLVERS.forEach(s => s.pmap = Object.fromEntries(s.params.map(p => [p.id, p])));
+
+/* ---------- state ---------- */
+const STORE_KEY = "gss-state-v1";
+let state = { unit:"m", active:"slope", theme:null, s:{}, std:"typical", custom:{}, customName:"", showFormulas:false, refLevel:0 };
+function freshSolverState(S){
+  return { locks:[...S.defaults.locks], vals:{...S.defaults.vals}, names:{}, opt:{...(S.defaults.opt||{})} };
+}
+try { const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null"); if (saved && saved.s) state = {...state, ...saved}; } catch(e){}
+SOLVERS.forEach(S => { if (!state.s[S.id]) state.s[S.id] = freshSolverState(S); });
+const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){} };
+const fromHash = location.hash.replace("#", ""); if (byId[fromHash]) state.active = fromHash;
+
+const nameOf = (S, st, id) => (st.names[id] || S.pmap[id].n);
+const fill = (tpl, S, st) => tpl.replace(/\{(\w+)\}/g, (_, id) => nameOf(S, st, id));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isNum = x => typeof x === "boolean" || isFinite(x);
+
+/* ---------- solving ---------- */
+function solve(S, st){
+  const free = st.locks.filter(id => !S.pmap[id].fixed);
+  const lockSet = new Set(st.locks);
+  const mode = S.modes.find(m => m.locks.length === lockSet.size && m.locks.every(l => lockSet.has(l)));
+  const res = { mode, vals:{...st.vals}, formulas:{}, msg:null, level:"info", ok:false };
+  if (!mode){
+    if (free.length < S.lockCount){
+      const n = S.lockCount - free.length;
+      res.msg = `Lock ${n} more value${n>1?"s":""} you know. Click a lock or a tag in the diagram.`;
+    } else {
+      const pairs = S.modes.map(m => m.locks.filter(l => !S.pmap[l].fixed).map(l => nameOf(S, st, l)).join(" + ")).join(" · ");
+      res.msg = `There is no direct formula for ${free.map(l => nameOf(S, st, l)).join(" + ")}. Combinations that work: ${pairs}.`;
+      res.level = "warn";
+    }
+    return res;
+  }
+  const inp = {}; mode.locks.forEach(l => inp[l] = st.vals[l]);
+  for (const l of mode.locks){
+    if (!isFinite(inp[l])){ res.msg = `Enter a value for ${nameOf(S, st, l)}.`; res.level = "warn"; return res; }
+    const p = S.pmap[l];
+    if (p.min !== undefined && inp[l] < p.min){ res.msg = `${nameOf(S, st, l)} must be at least ${p.min}.`; res.level = "err"; return res; }
+  }
+  let out;
+  try { out = mode.solve(inp, st.opt); }
+  catch(e){ res.msg = typeof e === "string" ? e : "Those values don't make a valid slope."; res.level = "err"; return res; }
+  const all = {...inp, ...out};
+  for (const [id, x] of Object.entries(S.extra || {})) if (!(mode.unused||[]).includes(id)) all[id] = x.calc(all, st.opt);
+  for (const [k, x] of Object.entries(all)) if (!isNum(x) && !(mode.unused||[]).includes(k)){ res.msg = "Those values don't make a valid slope."; res.level = "err"; return res; }
+  const bad = S.validate && S.validate(all);
+  if (bad){ res.msg = bad; res.level = "err"; return res; }
+  (mode.unused || []).forEach(id => delete all[id]);
+  const f = typeof mode.f === "function" ? mode.f(st.opt) : mode.f;
+  for (const [id, tpl] of Object.entries(f)) res.formulas[id] = fill(tpl, S, st);
+  for (const [id, x] of Object.entries(S.extra || {})) if (!(mode.unused||[]).includes(id)) res.formulas[id] = fill(typeof x.f === "function" ? x.f(st.opt) : x.f, S, st);
+  res.vals = all; res.ok = true;
+  for (const [k, x] of Object.entries(all)) if (!(S.keepTyped || []).includes(k) || mode.locks.includes(k)) st.vals[k] = x;
+  const chk = S.check && S.check(all, st.opt);
+  res.msg = chk || mode.note || null; res.level = chk ? "warn" : "info";
+  return res;
+}
+
+/* ---------- standards ----------
+   Each standard lists limits by surface use. A limit is [value, source]. Lengths are in feet, grades in %,
+   ratios in H per 1 V. Anything a standard doesn't set falls back to typical practice (and says so).
+------------------------------------------- */
+const USES = {
+  paved:{label:"Paved area"}, lawn:{label:"Lawn"}, planting:{label:"Planting bed"}, swale:{label:"Swale / channel"},
+  walk:{label:"Accessible path"}, ramp:{label:"Ramp"}, parking:{label:"Car park"}, bay:{label:"Accessible parking bay"},
+  road:{label:"Road"}, building:{label:"Away from building (soil)"}, buildingPaved:{label:"Away from building (paved)"},
+  bankMowed:{label:"Mowed bank"}, bankPlanted:{label:"Planted bank"}, cut:{label:"Cut slope"}, fill:{label:"Fill slope"},
+};
+const FT = { gMin:"pct", gMax:"pct", cMin:"pct", cMax:"pct", rMin:"ratio", riseMax:"len", landingMin:"len", goingMax:"len", totalRiseMax:"len", handrailRise:"len", distMin:"len" };
+const FLABEL = { gMin:"Min grade", gMax:"Max grade", cMin:"Min cross fall", cMax:"Max cross fall", rMin:"Steepest slope", riseMax:"Max rise per run",
+  landingMin:"Min landing length", goingMax:"Max run length (going)", totalRiseMax:"Max total rise", handrailRise:"Handrails when a run rises more than", distMin:"Slope continues for at least" };
+const FIELDS = [
+  ["walk","gMax"], ["walk","cMax"],
+  ["ramp","gMax"], ["ramp","riseMax"], ["ramp","goingMax"], ["ramp","landingMin"], ["ramp","totalRiseMax"], ["ramp","handrailRise"],
+  ["paved","gMin"], ["paved","gMax"], ["paved","cMin"], ["paved","cMax"],
+  ["parking","gMin"], ["parking","gMax"], ["parking","cMin"], ["parking","cMax"],
+  ["bay","gMax"], ["bay","cMax"],
+  ["road","gMin"], ["road","gMax"], ["road","cMin"], ["road","cMax"],
+  ["lawn","gMin"], ["lawn","gMax"], ["planting","gMin"], ["planting","gMax"], ["swale","gMin"], ["swale","gMax"],
+  ["building","gMin"], ["building","distMin"], ["buildingPaved","gMin"], ["buildingPaved","distMin"],
+  ["bankMowed","rMin"], ["bankPlanted","rMin"], ["cut","rMin"], ["fill","rMin"],
+];
+const TYP = "Typical practice";
+const STANDARDS = [
+  { id:"typical", short:"Typical", name:"Good practice (typical)", desc:"Common landscape and civil design values. Used wherever a code sets no limit.",
+    lim:{
+      walk:{ gMax:[5,TYP], cMax:[2,TYP] },
+      ramp:{ gMax:[100/12,TYP], riseMax:[M(0.75),TYP], landingMin:[M(1.5),TYP] },
+      paved:{ gMin:[1,TYP], gMax:[5,TYP], cMin:[1,TYP], cMax:[2.5,TYP] },
+      parking:{ gMin:[1,TYP], gMax:[5,TYP], cMin:[1,TYP], cMax:[5,TYP] },
+      bay:{ gMax:[2,TYP], cMax:[2,TYP] },
+      road:{ gMin:[0.5,TYP], gMax:[8,TYP], cMin:[1.5,TYP], cMax:[3,TYP] },
+      lawn:{ gMin:[2,TYP], gMax:[10,TYP] }, planting:{ gMin:[1,TYP], gMax:[50,TYP] }, swale:{ gMin:[1,TYP], gMax:[5,TYP] },
+      building:{ gMin:[5,TYP], distMin:[M(3),TYP] }, buildingPaved:{ gMin:[2,TYP], distMin:[M(3),TYP] },
+      bankMowed:{ rMin:[3,TYP] }, bankPlanted:{ rMin:[2,TYP] }, cut:{ rMin:[2,TYP] }, fill:{ rMin:[2,TYP] },
+    } },
+  { id:"us", short:"ADA + IBC", name:"US: ADA 2010 + IBC 2021", desc:"Accessible routes, ramps and parking from the 2010 ADA Standards. Site grading and cut/fill slopes from IBC 2021 §1804.4 and Appendix J.",
+    lim:{
+      walk:{ gMax:[5,"ADA 403.3"], cMax:[100/48,"ADA 403.3"] },
+      ramp:{ gMax:[100/12,"ADA 405.2"], riseMax:[30/12,"ADA 405.6"], landingMin:[5,"ADA 405.7.3"], handrailRise:[0.5,"ADA 405.8"] },
+      bay:{ gMax:[100/48,"ADA 502.4"], cMax:[100/48,"ADA 502.4"] },
+      building:{ gMin:[5,"IBC 1804.4"], distMin:[10,"IBC 1804.4"] }, buildingPaved:{ gMin:[2,"IBC 1804.4"], distMin:[10,"IBC 1804.4"] },
+      cut:{ rMin:[2,"IBC App. J106"] }, fill:{ rMin:[2,"IBC App. J107"] },
+    } },
+  { id:"uk", short:"AD M", name:"UK: Approved Document M + BS 8300", rampRule:"uk",
+    desc:"Accessible approach routes and ramps from Approved Document M (England) and BS 8300-1. The steepest ramp gradient depends on how long each run is.",
+    lim:{
+      walk:{ gMax:[5,"AD M (1:20)"], cMax:[2.5,"AD M (1:40)"] },
+      ramp:{ gMax:[100/12,"AD M"], riseMax:[M(0.5),"AD M"], goingMax:[M(10),"AD M"], landingMin:[M(1.5),"AD M (intermediate)"], totalRiseMax:[M(2),"AD M"] },
+    } },
+  { id:"custom", short:"Custom", name:"Custom", desc:"Your authority's or project's own values, for example a local road or drainage design manual. Blank cells use typical practice.", lim:{} },
+];
+const STD = Object.fromEntries(STANDARDS.map(s => [s.id, s]));
+const curStd = () => STD[state.std] || STD.typical;
+const stdName = std => std.id === "custom" ? (state.customName || "Custom standard") : std.name;
+// the limit in force for a use + field: from the chosen standard, else typical practice
+function limit(use, key){
+  const std = curStd();
+  if (std.id === "custom"){ const c = (state.custom || {})[use + "." + key]; if (isFinite(c)) return { v:c, src:[{ t:stdName(std) }] }; }
+  else { const x = std.lim[use] && std.lim[use][key]; if (x) return { v:x[0], src:[{ t:x[1], typ: x[1] === TYP }] }; }
+  const t = STD.typical.lim[use] && STD.typical.lim[use][key];
+  return t ? { v:t[0], src:[{ t:TYP, typ:true }] } : null;
+}
+// UK ramps: the steepest gradient allowed for a run of a given going (interpolated from 1:12 at 2 m, 1:15 at 5 m, 1:20 at 10 m)
+function ukMaxGrade(goingFt){
+  const m = goingFt * 0.3048;
+  if (m <= 2) return 100/12;
+  if (m <= 5) return 100/12 + (100/15 - 100/12) * (m - 2) / 3;
+  if (m <= 10) return 100/15 + (5 - 100/15) * (m - 5) / 5;
+  return null;
+}
+const fmtLim = (t, v) => t === "pct" ? trim(v, 2) + "%" : t === "ratio" ? trim(v, 2) + "H:1V" : fmtLen(v, state.unit);
+const revitLen = ft => (state.unit === "m" || state.unit === "mm") ? trim(ft * 304.8, 1) + " mm" : trim(ft, 4) + "'";
+const revLit = (t, v) => t === "len" ? revitLen(v) : trim(v, 3);
+const useOf = (S, st) => S.uses ? (S.uses.includes(st.opt.use) ? st.opt.use : S.defaultUse) : null;
+const srcOf = (...ls) => { const seen = new Set(), out = []; ls.filter(Boolean).forEach(l => l.src.forEach(s => { if (!seen.has(s.t)){ seen.add(s.t); out.push(s); } })); return out; };
+const TOL = 1e-6;
+
+function rangeCheck(label, expr, val, use, kMin, kMax){
+  const lo = kMin && limit(use, kMin), hi = kMax && limit(use, kMax); if (!lo && !hi) return null;
+  const t = FT[kMin || kMax], L = x => revLit(t, x.v);
+  const ok = (!lo || val >= lo.v - TOL) && (!hi || val <= hi.v + TOL);
+  return { label, status: ok ? "pass" : "fail", value: fmtLim(t, val),
+    limit: lo && hi ? `${fmtLim(t, lo.v)} to ${fmtLim(t, hi.v)}` : hi ? `max ${fmtLim(t, hi.v)}` : `min ${fmtLim(t, lo.v)}`,
+    src: srcOf(lo, hi), fname: label + " OK",
+    formula: lo && hi ? `and(not(${expr} < ${L(lo)}), not(${expr} > ${L(hi)}))` : hi ? `not(${expr} > ${L(hi)})` : `not(${expr} < ${L(lo)})` };
+}
+const maxCheck = (label, expr, val, use, key) => rangeCheck(label, expr, val, use, null, key);
+const minCheck = (label, expr, val, use, key) => rangeCheck(label, expr, val, use, key, null);
+function steepCheck(label, expr, ratio, use){            // a batter no steeper than rMin (H per 1 V)
+  const r = limit(use, "rMin"); if (!r) return null;
+  return { label, status: ratio >= r.v - TOL ? "pass" : "fail", value: fmtLim("ratio", ratio), limit: `no steeper than ${fmtLim("ratio", r.v)}`,
+    src: srcOf(r), fname: label + " OK", formula: `not(${expr} < ${trim(r.v, 3)})` };
+}
+function rampRunChecks(g, gx, going, goingX, rise, riseX){
+  const out = [], std = curStd();
+  if (std.rampRule === "uk"){
+    const ag = ukMaxGrade(going);
+    if (ag !== null) out.push({ label:"Grade for this run length", status: g <= ag + TOL ? "pass" : "fail", value: fmtLim("pct", g),
+      limit:`max ${trim(ag, 2)}% (1 in ${trim(100 / ag, 1)}) for a ${fmtLen(going, state.unit)} run`, src:[{ t:"AD M (gradient by going)" }],
+      fname:"Ramp Grade OK", formula:`not(${gx} > ${trim(ag, 3)})` });
+  } else out.push(maxCheck("Ramp grade", gx, g, "ramp", "gMax"));
+  out.push(maxCheck("Rise per run", riseX, rise, "ramp", "riseMax"));
+  out.push(maxCheck("Run length (going)", goingX, going, "ramp", "goingMax"));
+  const hr = limit("ramp", "handrailRise");
+  if (hr) out.push({ label:"Handrails", status: rise > hr.v + TOL ? "warn" : "pass", value: rise > hr.v + TOL ? "Required" : "Not required",
+    limit:`needed when a run rises more than ${fmtLim("len", hr.v)}`, src: srcOf(hr), fname:"Handrails Required", formula:`${riseX} > ${revitLen(hr.v)}` });
+  return out;
+}
+function gradeChecks(use, g, gx, dist, dx, rise, rx){
+  if (use === "bankMowed" || use === "bankPlanted"){
+    const r = limit(use, "rMin"); if (!r) return [];
+    const mx = 100 / r.v;
+    return [{ label:"Bank grade", status: g <= mx + TOL ? "pass" : "fail", value: fmtLim("pct", g), limit:`max ${trim(mx, 2)}% (${fmtLim("ratio", r.v)})`,
+      src: srcOf(r), fname:"Bank Grade OK", formula:`not(${gx} > ${trim(mx, 3)})` }];
+  }
+  if (use === "ramp") return rampRunChecks(g, gx, dist, dx, rise, rx);
+  const out = [rangeCheck("Grade", gx, g, use, "gMin", "gMax")];
+  if (use === "building" || use === "buildingPaved") out.push(minCheck("Slope distance", dx, dist, use, "distMin"));
+  const w = use === "walk" && limit("walk", "gMax"), rg = limit("ramp", "gMax");
+  if (w && g > w.v + TOL && rg && g <= rg.v + TOL) out.push({ label:"Treat it as a ramp", status:"info", note:"Steeper than an accessible path allows but within ramp limits. Switch Surface use to Ramp to check rise, run length and landings." });
+  return out;
+}
+function checksFor(S, st, res){
+  const v = res.vals, x = id => nameOf(S, st, id), u = useOf(S, st);
+  switch (S.id){
+    case "slope":     return gradeChecks(u, v.G, x("G"), v.a, x("a"), v.b, x("b"));
+    case "spot":      return gradeChecks(u, Math.abs(v.G), `abs(${x("G")})`, v.D, x("D"), Math.abs(v.X), `abs(${x("X")})`);
+    case "contours":  return gradeChecks(u, v.G, x("G"), v.D, x("D"), v.H - v.L, `(${x("H")} - ${x("L")})`);
+    case "crossfall": return [rangeCheck("Cross fall", x("S"), v.S, u, "cMin", "cMax")];
+    case "daylight": {
+      const out = [steepCheck("Cut slope", x("Cr"), v.Cr, "cut"), steepCheck("Fill slope", x("Fr"), v.Fr, "fill")];
+      const m = limit("bankMowed", "rMin"), act = v.K ? v.Cr : v.Fr;
+      if (m && v.O > TOL) out.push({ label: act >= m.v - TOL ? "Mowable batter" : "Too steep to mow", status: act >= m.v - TOL ? "pass" : "warn",
+        value: fmtLim("ratio", act), limit:`mowing needs ${fmtLim("ratio", m.v)} or flatter`, src: srcOf(m), fname:"Mowable",
+        formula: `not(if(${x("K")}, ${x("Cr")}, ${x("Fr")}) < ${trim(m.v, 3)})` });
+      return out;
+    }
+    case "ramp": return [...rampRunChecks(v.G, x("G"), v.U, x("U"), v.R, x("R")),
+      minCheck("Landing length", x("L"), v.L, "ramp", "landingMin"), maxCheck("Total rise", x("H"), v.H, "ramp", "totalRiseMax")];
+  }
+  return [];
+}
+// set a solver's inputs to the chosen standard's limits
+function applyStandard(S, st){
+  if (S.id === "ramp"){
+    const uk = curStd().rampRule === "uk", r = limit("ramp", "riseMax"), l = limit("ramp", "landingMin"), g = limit("ramp", "gMax");
+    if (uk){ st.vals.G = 5; st.vals.M = M(0.5); }              // 1:20 with a 500 mm rise gives the full 10 m going
+    else { if (g) st.vals.G = g.v; if (r) st.vals.M = r.v; }
+    if (l) st.vals.L = l.v;
+  }
+  if (S.id === "daylight"){ const c = limit("cut", "rMin"), f = limit("fill", "rMin"); if (c) st.vals.Cr = c.v; if (f) st.vals.Fr = f.v; }
+}
+const ST_ICON = { pass:"✓", fail:"✕", warn:"!", info:"i" };
+function summaryBadge(list, short){
+  if (!list.length) return "";
+  const fails = list.filter(c => c.status === "fail").length, warns = list.filter(c => c.status === "warn").length;
+  return fails ? `<span class="badge bad" title="${esc(stdName(curStd()))}">✕ ${fails} issue${fails > 1 ? "s" : ""}${short ? " · " + esc(short) : ""}</span>`
+    : `<span class="badge ok" title="${esc(stdName(curStd()))}">✓ Meets limits${warns ? ` · ${warns} note${warns > 1 ? "s" : ""}` : ""}${short ? " · " + esc(short) : ""}</span>`;
+}
+function renderChecks(S, st, res){
+  if (!res.ok) return "";
+  const std = curStd(), list = checksFor(S, st, res).filter(Boolean), u = useOf(S, st);
+  let h = `<div class="checks"><div class="checks-h"><div><h3>Standards check</h3><span class="std">${esc(stdName(std))}</span></div><div class="checks-a">${summaryBadge(list)}`;
+  if (S.id === "ramp" || S.id === "daylight") h += `<button class="btn sm" data-apply="1" title="Set the inputs to this standard's limits">Use these limits</button>`;
+  h += `</div></div>`;
+  if (S.uses) h += `<div class="uses"><span class="lbl">Surface use</span>${S.uses.map(k => `<button class="chip" data-use="${k}" aria-pressed="${u === k}">${USES[k].label}</button>`).join("")}</div>`;
+  const fx = !!state.showFormulas;
+  h += list.length ? list.map(c => `<div class="chk ${c.status}${(c.formula && fx) || c.note ? "" : " nof"}"><span class="st" aria-label="${c.status}">${ST_ICON[c.status]}</span>
+      <div><b>${esc(c.label)}</b>${c.value !== undefined ? `<div class="lim">${esc(c.value)} · ${esc(c.limit)}</div>` : ""}${(c.src || []).map(s => `<span class="src${s.typ ? " typ" : ""}">${esc(s.t)}</span>`).join(" ")}</div>
+      ${c.formula && fx ? `<div><div class="ptype">Yes/No · ${esc(c.fname)}</div><div class="formula"><code>${esc(c.formula)}</code><button class="copy" data-copy="${esc(c.formula)}">COPY</button></div></div>` : c.note ? `<div class="msgline">${esc(c.note)}</div>` : ""}</div>`).join("")
+    : `<div class="chk info"><span class="st">i</span><div class="msgline">No limits are set for this use.</div></div>`;
+  return h + `</div>`;
+}
+
+/* ---------- use it in Revit ----------
+   What to type into Revit's own grading tools (slope arrows, shape editing, Site Settings, ramp types).
+   Each step: tool (where), field (what), value (what to type; copyable), note (how).
+------------------------------------------- */
+const usesLevel = id => ["spot", "daylight", "crossfall"].includes(id);
+function revitSteps(S, st, v){
+  const f = x => fmtLen(x, state.unit).replace(/^≈ /, ""), Lv = state.refLevel || 0, rel = x => f(x - Lv);
+  const pct = g => trim(g, 3) + "%", alt = g => `= ${trim(Math.atan(Math.abs(g) / 100) / D2R, 3)}° = 1:${trim(100 / Math.abs(g), 2)} = ${trim(Math.abs(g) * 10, 2)}‰`;
+  const ARROW = "Floor or Roof › Edit Boundary › Slope Arrow";
+  const SUB = "Floor or Toposolid › Modify Sub Elements";
+  switch (S.id){
+    case "slope": return [
+      { tool:ARROW, field:"Specify: Slope  →  Slope", value:pct(v.G), note:`${alt(v.G)}. Type it in your project's slope format (Manage › Project Units › Slope).` },
+      { tool:ARROW, field:"Specify: Height at Tail  →  Head offset minus tail offset", value:f(v.b), note:`Draw the arrow ${f(v.a)} long on plan, tail at the low end.` },
+      { tool:SUB, field:"Raise the high edge (or its points) by", value:f(v.b), note:`Edge ${f(v.a)} away on plan from the low edge.` },
+      { tool:"Annotate › Spot Slope", field:"Should read", value:pct(v.G), note:`Along the surface the slope is ${f(v.c)} long.` },
+    ];
+    case "spot": return [
+      { tool:ARROW + " · Specify: Height at Tail", field:"Height Offset at Tail", value:rel(v.E1), note:`Start level ${f(v.E1)} minus the level it's hosted on (${f(Lv)}).` },
+      { tool:ARROW + " · Specify: Height at Tail", field:"Height Offset at Head", value:rel(v.E2), note:`End level ${f(v.E2)}. Draw the arrow ${f(v.D)} long on plan.` },
+      { tool:SUB, field:"Point elevations: start · end", value:`${f(v.E1)} · ${f(v.E2)}`, copy:f(v.E1), note:`Points ${f(v.D)} apart on plan. If your points are relative to the host, use the offsets above.` },
+      { tool:"Annotate › Spot Slope", field:"Should read", value:pct(Math.abs(v.G)), note:v.G < 0 ? "Falling from start to end." : "Rising from start to end." },
+    ];
+    case "contours": return [
+      { tool:"Massing & Site › Site Settings", field:"Contour Line Display: At Intervals of", value:f(v.I), note:"Tick Contour Line Display first." },
+      { tool:"Massing & Site › Site Settings", field:"Passing Through Elevation", value:f(0), note:`Keeps contours on whole multiples of ${f(v.I)}, so the first one is at ${f(v.F)}.` },
+      { tool:"Check the model", field:"Contour lines between the two spots", value:String(v.N), copy:String(v.N), note: v.N ? `First at ${f(v.F)}, ${f(v.P)} from the low spot on plan, then every ${f(v.S)}.` : "None should cross." },
+    ];
+    case "daylight": return [
+      { tool:"Toposolid › Edit Sketch or Modify Sub Elements", field:"Draw the daylight line this far out from the design edge (plan)", value:f(v.O), note: v.K ? "Uphill side: the batter is in cut." : "Downhill side: the batter is in fill." },
+      { tool:SUB, field:"Edge points (hinge) elevation", value:f(v.P), note:`Offset from its level: ${rel(v.P)}.` },
+      { tool:SUB, field:"Daylight line points elevation", value:f(v.Z), note:`Offset from its level: ${rel(v.Z)}. Between the two lines the surface is the batter.` },
+      { tool:"Annotate › Spot Slope", field:"Batter should read", value:pct(100 / (v.K ? v.Cr : v.Fr)), note:`${trim(v.K ? v.Cr : v.Fr, 2)}H:1V. Batter length ${f(v.L)}, height ${f(v.H)}.` },
+    ];
+    case "crossfall": return st.opt.profile === "oneway" ? [
+      { tool:ARROW + " · Specify: Slope", field:"Slope (arrow drawn across the width)", value:pct(v.S), note:`${alt(v.S)}. Tail on the high edge.` },
+      { tool:ARROW + " · Specify: Height at Tail", field:"Height Offset at Tail · Head", value:`${rel(v.C)} · ${rel(v.E)}`, copy:rel(v.C), note:`High edge ${f(v.C)}, low edge ${f(v.E)}; arrow ${f(v.W)} long.` },
+      { tool:"Annotate › Spot Slope", field:"Should read", value:pct(v.S), note:"" },
+    ] : [
+      { tool:SUB + " › Add Split Line", field:"Split along the crown, then set the crown points to", value:"+" + f(v.D), copy:f(v.D), note:"Relative to the edges. Or keep the crown at 0 and set both edges to −" + f(v.D) + "." },
+      { tool:SUB, field:"Edge level", value:f(v.E), note:`Crown ${f(v.C)}. Offsets from the level: crown ${rel(v.C)}, edges ${rel(v.E)}.` },
+      { tool:"Floor type › Edit Structure", field:"Variable (top layer)", value:"Tick", copy:"", note:"So the top falls to the edges while the slab bottom stays flat." },
+      { tool:"Annotate › Spot Slope", field:"Each side should read", value:pct(v.S), note:`Over ${f(v.W / 2)} each side.` },
+    ];
+    case "ramp": return [
+      { tool:"Ramp › Edit Type", field:"Ramp Max Slope (1/x)", value:trim(v.K, 3), note:`1:${trim(v.K, 2)} = ${pct(v.G)}.` },
+      { tool:"Ramp › Edit Type", field:"Maximum Incline Length", value:f(v.U), note:"Revit won't let a single run be longer, so it forces a landing." },
+      { tool:"Ramp › Properties", field:"Base Level to Top Level rise", value:f(v.H), note:"Set Base / Top Level and their offsets to give this rise." },
+      { tool:"Ramp › sketch the runs", field:"Runs and landings", value:`${v.N} run${v.N === 1 ? "" : "s"} · ${Math.max(0, v.N - 1)} landing${v.N === 2 ? "" : "s"}`, copy:f(v.L), note:`Each run ${f(v.U)} on plan rising ${f(v.R)}; leave ${f(v.L)} between runs for each landing.` },
+    ];
+  }
+  return [];
+}
+function renderRevit(S, st, res){
+  if (!res.ok) return "";
+  const steps = revitSteps(S, st, res.vals);
+  let h = `<div class="checks revit"><div class="checks-h"><div><h3>Use it in Revit</h3><span class="std">What to type into Revit's own tools</span></div>`;
+  if (usesLevel(S.id)) h += `<label class="lvl"><span class="lbl">Host level elevation</span><input id="refLevel" class="pval" value="${esc(fmtLen(state.refLevel || 0, state.unit))}" aria-label="Elevation of the Revit level the element is hosted on"></label>`;
+  h += `</div>`;
+  h += steps.map((s, i) => `<div class="chk info rv"><span class="st">${i + 1}</span>
+      <div><div class="ptype">${esc(s.tool)}</div><b>${esc(s.field)}</b>${s.note ? `<div class="lim">${esc(s.note)}</div>` : ""}</div>
+      <div class="rvv"><code>${esc(s.value)}</code>${(s.copy ?? s.value) ? `<button class="copy" data-copy="${esc(s.copy ?? s.value)}">COPY</button>` : ""}</div></div>`).join("");
+  return h + `</div>`;
+}
+
+/* ---------- diagram helpers ---------- */
+const W = 640, Hh = 420;
+// scale a world box into the 640 × 420 drawing, with separate margins (left, right, top, bottom)
+function fitPad(minX, minY, maxX, maxY, pl = 70, pr = 70, ptop = 70, pb = 70){
+  const w = Math.max(maxX - minX, 1e-6), h = Math.max(maxY - minY, 1e-6), aw = W - pl - pr, ah = Hh - ptop - pb;
+  const s = Math.min(aw / w, ah / h);
+  const ox = pl + (aw - w*s)/2 - minX*s, oy = ptop + (ah + h*s)/2 + minY*s;
+  return { s, x: x => ox + x*s, y: y => oy - y*s };
+}
+// vertical exaggeration: a "nice" factor that makes a shallow slope at least `target` tall for its width
+function exag(h, w, target){
+  if (!(h > 0) || !(w > 0)) return 1;
+  const k = target * w / h; if (k <= 1) return 1;
+  const p = 10 ** Math.floor(Math.log10(k));
+  for (const n of [1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (n * p >= k - 1e-9) return +(n * p).toPrecision(3);
+  return 10 * p;
+}
+const vxNote = (vx, x, y, anchor = "middle") => vx > 1 ? `<text class="note" x="${x}" y="${y}" text-anchor="${anchor}">Vertical scale × ${vx}</text>` : "";
+let CTX = null; // {S, st, res}
+function tag(x, y, id, anchor = "middle"){
+  const { S, st, res } = CTX; const p = S.pmap[id];
+  const name = nameOf(S, st, id), val = fmtVal(p, res.vals[id], state.unit);
+  const txt = `${name}  ${val}`; const w = txt.length * 10.2 + 24, h = 34;
+  let x0 = anchor === "start" ? x : anchor === "end" ? x - w : x - w/2;
+  x0 = Math.max(4, Math.min(W - w - 4, x0)); const y0 = Math.max(4, Math.min(Hh - h - 4, y - h/2));
+  const locked = st.locks.includes(id);
+  const cls = ["tag", locked ? "on" : "", p.fixed ? "fixed" : "", p.ro ? "ro" : ""].join(" ");
+  return `<g class="${cls}" data-p="${id}" role="button" tabindex="0" aria-label="${esc(name)} ${esc(val)}${locked?" (locked)":""}">
+    <rect x="${x0}" y="${y0}" width="${w}" height="${h}"/>
+    <text x="${x0+12}" y="${y0+23}"><tspan class="tn">${esc(name)}</tspan><tspan dx="7" font-weight="600">${esc(val)}</tspan></text></g>`;
+}
+function dimLine(x1, y1, x2, y2){
+  const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, nx = -dy/L*5, ny = dx/L*5;
+  return `<line class="dim" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>
+    <line class="dim" x1="${x1-nx}" y1="${y1-ny}" x2="${x1+nx}" y2="${y1+ny}"/><line class="dim" x1="${x2-nx}" y1="${y2-ny}" x2="${x2+nx}" y2="${y2+ny}"/>`;
+}
+const pt = (x, y) => `${x.toFixed(2)},${y.toFixed(2)}`;
+function hatch(xa, xb, y){ let d = ""; for (let x = xa + 8; x < xb; x += 12) d += `M${x.toFixed(1)} ${y + 1}l-8 8`; return `<path class="dim" d="${d}"/>`; }
+// small arrowhead at (x, y) pointing from (fx, fy) towards (x, y): shows which way water runs
+function arrow(fx, fy, x, y, size = 11){
+  const a = Math.atan2(y - fy, x - fx), c = Math.cos(a), s = Math.sin(a);
+  const p1 = [x - size*c + size*0.55*s, y - size*s - size*0.55*c], p2 = [x - size*c - size*0.55*s, y - size*s + size*0.55*c];
+  return `<path class="arrow" d="M${pt(x,y)} L${pt(p1[0],p1[1])} L${pt(p2[0],p2[1])} Z"/>`;
+}
+
+const DRAW = {
+  slope(v){
+    const { a, b } = v; if (!(a > 0 && b > 0)) return "";
+    const vx = exag(b, a, 0.34), f = fitPad(0, 0, a, b * vx, 80, 80, 96, 76), Y = y => f.y(y * vx);
+    const x0 = f.x(0), y0 = Y(0), x1 = f.x(a), y1 = Y(b);
+    let g = `<path class="fillgeo" d="M${pt(x0,y0)} L${pt(x1,y0)} L${pt(x1,y1)} Z"/>`;
+    g += `<line class="geo" x1="${x0 - 34}" y1="${y0}" x2="${x1 + 40}" y2="${y0}" stroke-width="2.5"/>` + hatch(x0 - 34, x1 + 40, y0);
+    const sq = 12; g += `<path class="dim" fill="none" d="M${x1-sq},${y0} V${y0-sq} H${x1}"/>`;
+    const ta = Math.atan2(y0 - y1, x1 - x0), ar = 52;
+    g += `<path class="hl" d="M${x0+ar},${y0} A${ar} ${ar} 0 0 0 ${pt(x0+ar*Math.cos(ta), y0-ar*Math.sin(ta))}" stroke-width="1.6"/>`;
+    g += `<line class="surf" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}"/>`;
+    g += arrow(x1, y1, x0 + (x1 - x0) * 0.55, y0 + (y1 - y0) * 0.55);
+    g += `<circle class="dot" cx="${x0}" cy="${y0}" r="3"/><circle class="dot" cx="${x1}" cy="${y1}" r="3"/>`;
+    g += dimLine(x0, y0 + 26, x1, y0 + 26) + dimLine(x1 + 24, y0, x1 + 24, y1);
+    g += tag((x0 + x1)/2, y0 + 26, "a");
+    g += tag(x1 - 14, (y0 + y1)/2 + 14, "b", "end");
+    const mx = (x0 + x1)/2, my = (y0 + y1)/2, hl = Math.hypot(x1 - x0, y1 - y0), nx = -(y0 - y1)/hl, ny = -(x1 - x0)/hl;
+    g += tag(mx + nx*30, my + ny*30, "c", "end");
+    g += tag(x0 + ar + 10, y0 - 20, "A", "start");
+    g += tag(14, 22, "G", "start") + tag(14, 62, "N", "start");
+    g += vxNote(vx, W - 14, 26, "end");
+    return g;
+  },
+  spot(v){
+    const { E1, E2, D } = v; if (!(D > 0 && isFinite(E1) && isFinite(E2))) return "";
+    const lo = Math.min(E1, E2), h = Math.abs(E2 - E1), vx = exag(h, D, 0.3);
+    const top = Math.max(h * vx, 0.12 * D), B = 0.14 * D, f = fitPad(0, -B, D, top, 84, 84, 100, 84), Y = e => f.y((e - lo) * vx);
+    const xa = f.x(0), xb = f.x(D), ya = Y(E1), yb = Y(E2), yd = f.y(-B);
+    let g = `<path class="earth" d="M${pt(xa,ya)} L${pt(xb,yb)} L${pt(xb,yd)} L${pt(xa,yd)} Z"/>`;
+    g += `<line class="geo" x1="${xa}" y1="${yd}" x2="${xb}" y2="${yd}" stroke-width="1.2" opacity=".5"/>`;
+    g += `<line class="aux" x1="${xa}" y1="${ya}" x2="${xa}" y2="${yd}"/><line class="aux" x1="${xb}" y1="${yb}" x2="${xb}" y2="${yd}"/>`;
+    if (h > 1e-9) g += `<line class="aux" x1="${xa}" y1="${ya}" x2="${xb + 28}" y2="${ya}"/>` + dimLine(xb + 22, ya, xb + 22, yb);
+    g += `<line class="surf" x1="${xa}" y1="${ya}" x2="${xb}" y2="${yb}"/>`;
+    if (h > 1e-9){ const hi1 = E1 > E2, fx = hi1 ? xa : xb, fy = hi1 ? ya : yb, t = 0.62, tx = hi1 ? xa + (xb - xa)*t : xb - (xb - xa)*t;
+      g += arrow(fx, fy, tx, ya + (yb - ya) * ((tx - xa) / (xb - xa))); }
+    g += `<circle class="dot" cx="${xa}" cy="${ya}" r="4"/><circle class="dot" cx="${xb}" cy="${yb}" r="4"/>`;
+    g += dimLine(xa, yd + 26, xb, yd + 26) + tag((xa + xb)/2, yd + 26, "D");
+    g += tag(xa - 6, ya - 30, "E1", "start") + tag(xb + 6, yb - 30, "E2", "end");
+    g += tag((xa + xb)/2, (ya + yb)/2 - 44, "G");
+    g += tag(W/2, 22, "X");
+    g += vxNote(vx, W - 14, Hh - 10, "end");
+    return g;
+  },
+  contours(v){
+    const { L, H, D, I, F, N, P } = v; if (!(D > 0 && H > L && I > 0)) return "";
+    const h = H - L, vx = exag(h, D, 0.34), B = 0.1 * D, f = fitPad(0, -B, D, h * vx, 70, 70, 92, 104);
+    const Y = e => f.y((e - L) * vx), X = d => f.x(d), dx = e => (e - L) / h * D;
+    const x0 = X(0), x1 = X(D), y0 = Y(L), y1 = Y(H), yd = f.y(-B);
+    let g = `<path class="earth" d="M${pt(x0,y0)} L${pt(x1,y1)} L${pt(x1,yd)} L${pt(x0,yd)} Z"/>`;
+    const n = Math.min(N, 150); let cl = "";
+    for (let k = 0; k < n; k++){
+      const e = F + k * I, x = X(dx(e)), y = Y(e);
+      if (n <= 40) cl += `<line class="aux" x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${yd}"/>`;
+      cl += `<line class="contour" x1="${(x - 24).toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + 24).toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+      cl += `<circle class="dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${n > 40 ? 1.6 : 3}"/>`;
+    }
+    g += `<line class="surf" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}"/>` + cl;
+    g += `<circle class="dot" cx="${x0}" cy="${y0}" r="4"/><circle class="dot" cx="${x1}" cy="${y1}" r="4"/>`;
+    g += dimLine(x0, yd + 24, x1, yd + 24) + tag((x0 + x1)/2, yd + 24, "D");
+    if (N > 0){ const xf = X(P); g += dimLine(x0, yd + 64, xf, yd + 64) + tag(xf + 8, yd + 64, "P", "start");
+      g += tag(X(dx(F)) + 12, Y(F) + 26, "F", "start"); }
+    g += tag(x0 - 4, y0 - 30, "L", "start") + tag(x1 - 8, y1 + 30, "H", "end");
+    g += tag(14, 22, "N", "start") + tag(14, 62, "I", "start") + tag(14, 102, "C", "start");
+    g += tag(W - 14, 22, "G", "end") + tag(W - 14, 62, "S", "end");
+    g += vxNote(vx, W / 2, 24);
+    return g;
+  },
+  daylight(v){
+    const { P, E, g: gs, K, O, H, Z } = v; if (!(isFinite(O) && O >= 0 && isFinite(P) && isFinite(E) && isFinite(gs))) return "";
+    const gr = gs / 100, padW = Math.max(O * 1.2, Math.abs(E - P) * 2.5, M(2)), xr = O + Math.max(O * 1.05, M(1.5));
+    const gy = x => E + gr * x;
+    const els = [P, E, Z, gy(-padW), gy(xr)], hi = Math.max(...els), lo0 = Math.min(...els), span = Math.max(hi - lo0, M(0.3)), lo = lo0 - 0.45 * span;
+    const vx = exag(hi - lo, padW + xr, 0.3);
+    const f = fitPad(-padW, 0, xr, (hi - lo) * vx, 50, 40, 128, 62), X = f.x, Y = e => f.y((e - lo) * vx);
+    const xl = X(-padW), xh = X(0), xd = X(O), xe = X(xr), yP = Y(P), yZ = Y(Z), yE = Y(E), yb = Y(lo);
+    let s = `<path class="earth" d="M${pt(xl, Y(gy(-padW)))} L${pt(xe, Y(gy(xr)))} L${pt(xe, yb)} L${pt(xl, yb)} Z"/>`;
+    if (O > 1e-6) s += `<path class="${K ? "cutzone" : "fillzone"}" d="M${pt(xl, yP)} L${pt(xh, yP)} L${pt(xd, yZ)} L${pt(xl, Y(gy(-padW)))} Z"/>`;
+    s += `<line class="ground" x1="${xl}" y1="${Y(gy(-padW))}" x2="${xe}" y2="${Y(gy(xr))}"/>`;
+    s += `<path class="surf" d="M${pt(xl, yP)} L${pt(xh, yP)} L${pt(xd, yZ)}"/>`;
+    s += `<line class="aux" x1="${xh}" y1="${yP}" x2="${xh}" y2="${yE}"/>`;
+    s += `<circle class="dot" cx="${xh}" cy="${yP}" r="4"/><circle class="dot" cx="${xd}" cy="${yZ}" r="4"/><circle class="dot" cx="${xh}" cy="${yE}" r="3"/>`;
+    if (O > 1e-6){
+      const zx = (xl + xh) / 2, zy = (yP + Y(gy(-padW / 2))) / 2;
+      if (Math.abs(yP - Y(gy(-padW / 2))) > 30) s += `<text class="zl" x="${zx}" y="${zy + 5}" text-anchor="middle">${K ? "CUT" : "FILL"}</text>`;
+      s += `<line class="aux" x1="${xh}" y1="${yP}" x2="${xd + 30}" y2="${yP}"/>` + dimLine(xd + 22, yP, xd + 22, yZ) + tag(xd + 30, (yP + yZ) / 2, "H", "start");
+      const yo = K ? yP + 32 : yZ + 32;   // cut: below the batter (in the ground); fill: below daylight
+      s += dimLine(xh, yo, xd, yo) + tag(xh + 6, yo, "O", "start");
+    }
+    s += tag(xl + 4, yP - 28, "P", "start");
+    s += K ? tag(xh + 8, yE - 26, "E", "start") : tag(xh - 12, yE + 26, "E", "end");
+    s += tag(14, 22, "K", "start") + tag(14, 62, "L", "start") + tag(W - 14, 22, "Z", "end");
+    s += tag(14, Hh - 24, "g", "start") + tag(W / 2, Hh - 24, "Cr") + tag(W - 14, Hh - 24, "Fr", "end");
+    s += vxNote(vx, W - 14, 66, "end");
+    return s;
+  },
+  crossfall(v){
+    const { W: wd, D, C } = v, crowned = CTX.st.opt.profile !== "oneway"; if (!(wd > 0 && D > 0 && isFinite(C))) return "";
+    const xmin = crowned ? -wd / 2 : 0, xmax = crowned ? wd / 2 : wd, run = crowned ? wd / 2 : wd;
+    const vx = exag(D, run, 0.3), f = fitPad(xmin, 0, xmax, D * vx, 76, 76, 124, 150), X = f.x, Y = e => f.y((e - (C - D)) * vx);
+    const yC = Y(C), yE = Y(C - D), band = 18;
+    const pts = crowned ? [[X(xmin), yE], [X(0), yC], [X(xmax), yE]] : [[X(0), yC], [X(xmax), yE]];
+    const top = pts.map(p => pt(p[0], p[1])).join(" L"), bot = pts.slice().reverse().map(p => pt(p[0], p[1] + band)).join(" L");
+    let g = `<line class="aux" x1="${X(xmin) - 20}" y1="${yC}" x2="${X(xmax) + 30}" y2="${yC}"/>`;
+    g += `<path class="pave" d="M${top} L${bot} Z"/><path class="surf" d="M${top}"/>`;
+    const yb = yE + band;
+    const yl = pts[0][1] + band;   // left end of the pavement (the high edge when one-way)
+    g += `<path class="geo" d="M${X(xmin) - 34} ${yl + 6} L${X(xmin)} ${yl} M${X(xmax)} ${yb} L${X(xmax) + 34} ${yb + 6}" stroke-width="2"/>`;
+    // water runs off towards the low edge(s)
+    const seg = crowned ? [[pts[1], pts[2]], [pts[1], pts[0]]] : [[pts[0], pts[1]]];
+    seg.forEach(([p, q]) => { const t = 0.55; g += arrow(p[0], p[1], p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t - 9, 10); });
+    g += `<circle class="dot" cx="${pts[crowned ? 1 : 0][0]}" cy="${yC}" r="4"/>`;
+    g += dimLine(X(xmax) + 22, yC, X(xmax) + 22, yE) + tag(X(xmax) + 14, (yC + yE) / 2, "D", "end");
+    g += dimLine(X(xmin), yb + 64, X(xmax), yb + 64) + tag((X(xmin) + X(xmax)) / 2, yb + 64, "W");
+    g += tag(X(xmax), yb + 24, "E", "end");
+    g += crowned ? tag(X(0), yC - 46, "C") : tag(X(0), yC - 46, "C", "start");
+    if (crowned) g += tag(X(-wd / 4), Y(C - D / 2) + band + 28, "S");             // under the left half
+    else g += tag(X(wd * 0.45), Y(C - D * 0.45) - 40, "S");                       // above the slope
+    g += vxNote(vx, W / 2, Hh - 14);
+    return g;
+  },
+  ramp(v){
+    const { H, N, R, U, L, T } = v; if (!(H > 0 && N >= 1 && U > 0 && T > 0)) return "";
+    const ext = Math.max(U * 0.12, L * 0.4), vx = exag(H, T + ext, 0.3), f = fitPad(0, 0, T + ext, H * vx, 84, 80, 132, 84), X = f.x, Y = e => f.y(e * vx);
+    let d = `M${pt(X(0), Y(0))}`, x = 0, y = 0;
+    const n = Math.min(N, 60);
+    for (let i = 0; i < n; i++){ x += U; y += R; d += ` L${pt(X(x), Y(y))}`; if (i < n - 1){ x += L; d += ` L${pt(X(x), Y(y))}`; } }
+    d += ` L${pt(X(x + ext), Y(y))}`;
+    let g = `<path class="fillgeo" d="${d} L${pt(X(x + ext), Y(0))} Z"/><path class="surf" d="${d}"/>`;
+    g += `<line class="geo" x1="${X(0) - 40}" y1="${Y(0)}" x2="${X(x + ext) + 20}" y2="${Y(0)}" stroke-width="2.5"/>` + hatch(X(0) - 40, X(x + ext) + 20, Y(0));
+    g += `<line class="aux" x1="${X(0) - 34}" y1="${Y(H)}" x2="${X(T + ext)}" y2="${Y(H)}"/>`;
+    g += dimLine(X(0) - 26, Y(0), X(0) - 26, Y(H)) + tag(X(0) - 34, Y(H) - 24, "H", "start");
+    g += dimLine(X(0), Y(0) + 26, X(T), Y(0) + 26) + tag((X(0) + X(T)) / 2, Y(0) + 26, "T");
+    g += tag(X(U * 0.5) - 8, Y(R * 0.5) - 26, "U", "end");
+    if (N > 1) g += tag(X(U + L / 2) + 8, Y(R) + 26, "L", "start");
+    g += tag(14, 22, "M", "start") + tag(14, 62, "R", "start") + tag(W - 14, Hh - 24, "N", "end");
+    g += tag(W - 14, 22, "G", "end") + tag(W - 14, 62, "A", "end") + tag(W - 14, 102, "K", "end");
+    g += vxNote(vx, 14, Hh - 12, "start");
+    return g;
+  },
+};
+
+/* ---------- selector ring ("dial") around the drawing ---------- */
+const DC = 440, R_OUT = 432, R_IN = 368, R_TXT = 393;
+const DS = (R_IN - 4) / Math.hypot(W / 2, Hh / 2);
+const NARROW = matchMedia("(max-width: 640px)");
+const dial = { key: "", angle: 0, idx: -1, n: 1, span: 360 };
+const PRINTING = { on: false };
+const polar = (r, deg) => [DC + r * Math.sin(deg * D2R), DC - r * Math.cos(deg * D2R)];
+const f2 = n => n.toFixed(2);
+function sector(r1, r2, a1, a2){
+  if (a2 - a1 >= 359.99) return `M${DC - r2} ${DC}a${r2} ${r2} 0 1 0 ${2*r2} 0a${r2} ${r2} 0 1 0 ${-2*r2} 0ZM${DC - r1} ${DC}a${r1} ${r1} 0 1 1 ${2*r1} 0a${r1} ${r1} 0 1 1 ${-2*r1} 0Z`;
+  const big = a2 - a1 > 180 ? 1 : 0, [x1, y1] = polar(r2, a1), [x2, y2] = polar(r2, a2), [x3, y3] = polar(r1, a2), [x4, y4] = polar(r1, a1);
+  return `M${f2(x1)} ${f2(y1)}A${r2} ${r2} 0 ${big} 1 ${f2(x2)} ${f2(y2)}L${f2(x3)} ${f2(y3)}A${r1} ${r1} 0 ${big} 0 ${f2(x4)} ${f2(y4)}Z`;
+}
+function arcPath(r, a1, a2){
+  const [x1, y1] = polar(r, a1), [x2, y2] = polar(r, a2);
+  return `M${f2(x1)} ${f2(y1)}A${r} ${r} 0 ${a2 - a1 > 180 ? 1 : 0} 1 ${f2(x2)} ${f2(y2)}`;
+}
+function comboLabel(S, st, m){
+  const free = m.locks.filter(l => !S.pmap[l].fixed);
+  return (free.length ? free : m.locks).map(l => nameOf(S, st, l)).join(" & ").toUpperCase();
+}
+function ringItems(S, st){
+  const out = [];
+  S.modes.forEach((m, mi) => {
+    const k = (m.usesOpt || [])[0];
+    if (k) S.options[k].choices.forEach(c => out.push({ mi, m, opt:k, v:c.v, label: comboLabel(S, st, m) + " · " + c.label.toUpperCase() }));
+    else out.push({ mi, m, label: comboLabel(S, st, m) });
+  });
+  return out;
+}
+function buildDial(S, st){
+  const svg = $("diagram"), flat = NARROW.matches || PRINTING.on, items = ringItems(S, st), n = items.length, span = 360 / n;
+  Object.assign(dial, { n, span, items });
+  const grid = `<defs><pattern id="dgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path class="gridline" d="M20 0H0V20"/></pattern></defs>`;
+  if (flat){
+    svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`); svg.classList.remove("dial");
+    svg.innerHTML = grid + `<rect width="${W}" height="${Hh}" fill="url(#dgrid)"/><svg id="drawing" x="0" y="0" width="${W}" height="${Hh}" viewBox="0 0 ${W} ${Hh}"></svg>`;
+    return;
+  }
+  svg.setAttribute("viewBox", "0 0 880 880"); svg.classList.add("dial");
+  let rot = `<circle class="bezel" cx="${DC}" cy="${DC}" r="${R_OUT}"/>`;
+  for (let a = 0; a < 360; a += 2.5){
+    const maj = a % 15 === 0, [x1, y1] = polar(R_OUT, a), [x2, y2] = polar(R_OUT - (maj ? 14 : 7), a);
+    rot += `<line class="tick${maj ? " maj" : ""}" x1="${f2(x1)}" y1="${f2(y1)}" x2="${f2(x2)}" y2="${f2(y2)}"/>`;
+  }
+  items.forEach((it, i) => {
+    const c = i * span, a1 = c - span / 2, a2 = c + span / 2, label = it.label;
+    rot += `<g class="seg" data-mode="${i}" role="button" tabindex="0" aria-label="Lock ${esc(label.toLowerCase())}">
+      <path d="${sector(R_IN, R_OUT, a1, a2)}" fill-rule="evenodd"/>
+      <path id="dlp${i}" d="${n === 1 ? arcPath(R_TXT, -179.9, 179.9) : arcPath(R_TXT, a1, a2)}" style="fill:none;stroke:none"/>
+      <text><textPath href="#dlp${i}" startOffset="50%" text-anchor="middle">${esc(label)}</textPath></text></g>`;
+    if (n > 1){ const [x1, y1] = polar(R_IN, a1), [x2, y2] = polar(R_OUT, a1); rot += `<line class="segline" x1="${f2(x1)}" y1="${f2(y1)}" x2="${f2(x2)}" y2="${f2(y2)}"/>`; }
+  });
+  const win = n > 1 ? `<path class="window" d="${sector(R_IN - 2, R_OUT + 2, -span / 2, span / 2)}"/>` : "";
+  const dw = W * DS, dh = Hh * DS;
+  svg.innerHTML = grid + `<g id="dialRot">${rot}</g>
+    <circle class="face" cx="${DC}" cy="${DC}" r="${R_IN}" fill="url(#dgrid)"/>${win}
+    <path class="pointer" d="M${DC - 13} 0H${DC + 13}L${DC} 20Z"/>
+    <svg id="drawing" x="${f2(DC - dw / 2)}" y="${f2(DC - dh / 2)}" width="${f2(dw)}" height="${f2(dh)}" viewBox="0 0 ${W} ${Hh}" overflow="visible"></svg>`;
+}
+function setDialAngle(a, animate){
+  const g = $("dialRot"); if (!g) return;
+  if (!animate) g.style.transition = "none";
+  g.style.transform = `rotate(${a}deg)`; g.style.transformOrigin = `${DC}px ${DC}px`;
+  if (!animate){ g.getBoundingClientRect(); g.style.transition = ""; }
+}
+function updateDial(S, st, res){
+  const key = [S.id, NARROW.matches || PRINTING.on, ...ringItems(S, st).map(it => it.label)].join("|");
+  const fresh = key !== dial.key;
+  if (fresh){ buildDial(S, st); dial.key = key; }
+  if (!dial.items) dial.items = ringItems(S, st);
+  const idx = res.mode ? dial.items.findIndex(it => it.m === res.mode && (!it.opt || st.opt[it.opt] === it.v)) : -1;
+  if (idx >= 0){
+    const target = -idx * dial.span;
+    if (fresh) dial.angle = target;
+    else dial.angle += ((target - dial.angle) % 360 + 540) % 360 - 180;
+    setDialAngle(dial.angle, !fresh);
+  } else if (fresh){ dial.angle = 0; setDialAngle(0, false); }
+  dial.idx = idx;
+  document.querySelectorAll("#diagram .seg").forEach(g => g.classList.toggle("on", +g.dataset.mode === idx));
+  $("turnPrev").disabled = $("turnNext").disabled = dial.items.length < 2;
+}
+function selectMode(i){
+  const S = byId[state.active], st = state.s[S.id], items = ringItems(S, st), n = items.length, it = items[((i % n) + n) % n];
+  st.locks = [...it.m.locks];
+  if (it.opt) st.opt[it.opt] = it.v;
+  render();
+}
+const turn = step => selectMode((dial.idx < 0 ? (step > 0 ? -1 : 0) : dial.idx) + step);
+
+/* ---------- rendering ---------- */
+const $ = id => document.getElementById(id);
+const ICON_LOCK = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+const ICON_UNLOCK = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>';
+const ICON_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg>';
+const TNAME = { len:"Length", ang:"Angle", int:"Integer", num:"Number", pct:"Number", ratio:"Number", bool:"Yes/No" };
+
+function avatarHTML(initials){
+  const fallback = `<span>${esc(initials)}</span>`;
+  return `<span class="avatar">${PROFILE.photo ? `<img src="${esc(PROFILE.photo)}" alt="${esc(PROFILE.name)}" onerror="this.outerHTML='${fallback.replace(/'/g, "&#39;")}'">` : fallback}</span>`;
+}
+function renderChrome(){
+  document.title = APP.name;
+  $("appName").textContent = APP.name; $("appTagline").textContent = APP.tagline; $("appSubtitle").textContent = APP.subtitle || "";
+  $("kicker").textContent = [PROFILE.company, PROFILE.department].filter(Boolean).join(" · ");
+  const nForm = SOLVERS.reduce((t, S) => t + ringItems(S, state.s[S.id]).length, 0);
+  $("status").querySelector("span").textContent = `${SOLVERS.length} grading solvers · ${nForm} lock combinations · ${STANDARDS.length - 1} standards + your own`;
+  $("stdSel").innerHTML = STANDARDS.map(x => `<option value="${x.id}">${esc(stdName(x))}</option>`).join("");
+  $("units").innerHTML = UNITS.map(u => `<button data-u="${u.id}" aria-pressed="${state.unit===u.id}">${u.label}</button>`).join("");
+  const initials = PROFILE.name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "?";
+  $("authorChip").innerHTML = `<span class="t"><span class="k">Prepared by</span><b>${esc(PROFILE.name)}</b>
+    <span>${esc([PROFILE.title, PROFILE.company].filter(Boolean).join(" · "))}</span></span>${avatarHTML(initials)}`;
+  $("tabs").innerHTML = SOLVERS.map(S => `<button role="tab" data-s="${S.id}" aria-selected="${state.active===S.id}">
+    <span class="num">${S.code}</span><span class="tn">${S.name}</span></button>`).join("")
+    + `<span class="sep" aria-hidden="true"></span><a href="#about">About</a>`;
+  const links = [
+    PROFILE.email && [PROFILE.email2 ? "Work email" : "Email", "mailto:" + PROFILE.email],
+    PROFILE.email2 && ["Personal email", "mailto:" + PROFILE.email2], PROFILE.phone && ["Call", "tel:" + PROFILE.phone.replace(/\s/g, "")],
+    PROFILE.linkedin && ["LinkedIn", PROFILE.linkedin], PROFILE.github && ["GitHub", PROFILE.github], PROFILE.website && ["Website", PROFILE.website],
+  ].filter(Boolean);
+  $("aboutCard").innerHTML = `${avatarHTML(initials)}<div>
+    <h3>${esc(PROFILE.name)}</h3>
+    <p class="role">${esc([PROFILE.title, PROFILE.company].filter(Boolean).join(" · "))}${PROFILE.location ? " — " + esc(PROFILE.location) : ""}</p>
+    ${PROFILE.bio ? `<p class="bio">${esc(PROFILE.bio)}</p>` : ""}
+    <div class="links">${links.map(([l, h]) => `<a class="btn sm" href="${esc(h)}" ${h.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${l}</a>`).join("")}
+    ${PROFILE.sister ? `<a class="btn sm primary" href="${esc(PROFILE.sister)}" target="_blank" rel="noopener">Revit Formula Solver (families)</a>` : ""}</div></div>`;
+  $("footLeft").textContent = [PROFILE.company, "© " + new Date().getFullYear()].filter(Boolean).join(" · ");
+  $("tbName").textContent = PROFILE.name || "—"; $("tbTitle").textContent = PROFILE.title || "";
+  $("tbLoc").textContent = PROFILE.location || "";
+  $("tbDate").textContent = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function render(){
+  const S = byId[state.active], st = state.s[S.id];
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.s === S.id));
+  document.querySelectorAll("#units button").forEach(b => b.setAttribute("aria-pressed", b.dataset.u === state.unit));
+  $("sTitle").textContent = S.name; $("sSub").textContent = S.sub; $("sCode").textContent = S.code;
+  $("vtNum").textContent = SOLVERS.indexOf(S) + 1; $("vtCode").textContent = S.code; $("vtTitle").textContent = S.name;
+  const usesOpt = (S.modes.find(m => m.locks.length === st.locks.length && m.locks.every(l => st.locks.includes(l))) || {}).usesOpt || [];
+  const optTxt = usesOpt.map(k => (S.options[k].choices.find(c => c.v === st.opt[k]) || {}).label).filter(Boolean);
+  $("vtSub").textContent = "Known: " + st.locks.map(id => nameOf(S, st, id)).join(" + ") + optTxt.map(t => "  ·  " + t).join("") + "  ·  Scale: NTS";
+  const res = solve(S, st); CTX = { S, st, res };
+
+  updateDial(S, st, res);
+  $("drawing").innerHTML = (res.ok && DRAW[S.id](res.vals)) || `<text x="320" y="210" text-anchor="middle" class="note">${res.ok ? "Nothing to draw for these values" : "Lock values to see the drawing"}</text>`;
+
+  $("msg").innerHTML = res.msg ? `<div class="msg ${res.level === "info" ? "" : res.level}">${ICON_INFO}<span>${esc(res.msg)}</span></div>` : "";
+
+  const fx = !!state.showFormulas;
+  document.querySelector("table.params").classList.toggle("nofx", !fx);
+  $("phead").innerHTML = `<tr><th style="width:56px">Lock</th><th>Parameter</th><th style="width:${fx ? "25%" : "38%"};text-align:right">Value</th>${fx ? "<th>Family formula</th>" : ""}</tr>`;
+  $("pTitle").textContent = fx ? "Values & family formulas" : "Values";
+  $("pSub").textContent = fx ? "Formulas for a parametric Revit family. Rename a parameter to match your family and every formula follows."
+    : "Lock what you know, type it in, read off the rest. Results update as you type.";
+  $("fxBtn").setAttribute("aria-pressed", fx); $("fxBtn").querySelector("span").textContent = fx ? "Family formulas: on" : "Family formulas: off";
+  $("rows").innerHTML = S.params.map(p => {
+    const locked = st.locks.includes(p.id), v = res.vals[p.id], unused = res.mode && (res.mode.unused || []).includes(p.id);
+    const lockCls = p.fixed ? "lockbtn fixed" : p.ro ? "lockbtn ro" : "lockbtn";
+    const lockTitle = p.fixed ? "Always an input" : p.ro ? "" : locked ? "Unlock" : "Lock this value";
+    const icon = (p.fixed || locked) ? ICON_LOCK : ICON_UNLOCK;
+    let fcell;
+    if (locked) fcell = `<div class="formula"><span class="input-note">Input — type the value in the family type</span></div>`;
+    else if (unused) fcell = `<div class="formula"><span class="input-note">Not used with these locks</span></div>`;
+    else if (res.ok && res.formulas[p.id]) fcell = `<div class="formula"><span class="eq">=</span><code>${esc(res.formulas[p.id])}</code><button class="copy" data-copy="${esc(res.formulas[p.id])}">COPY</button></div>`;
+    else fcell = `<div class="formula"><span class="input-note">—</span></div>`;
+    const shown = (unused || (!res.ok && !locked)) ? "" : fmtVal(p, v, state.unit).replace(/^≈ /, "");
+    return `<tr class="${locked ? "locked" : ""}">
+      <td class="c-lock"><button class="${lockCls}" data-lock="${p.id}" aria-pressed="${locked}" title="${lockTitle}" aria-label="${lockTitle} ${esc(nameOf(S, st, p.id))}">${icon}</button></td>
+      <td class="c-name"><input class="pname" data-name="${p.id}" value="${esc(nameOf(S, st, p.id))}" aria-label="Parameter name" spellcheck="false"><div class="ptype">${TNAME[p.t]}${p.fixed ? " · input" : p.ro ? " · result" : ""}</div></td>
+      <td class="c-val"><input class="pval ${locked ? "" : "computed"}" data-val="${p.id}" value="${esc(shown)}" ${p.ro ? "readonly" : ""} aria-label="Value" spellcheck="false" inputmode="${p.t === "len" || p.t === "ratio" || p.t === "pct" ? "text" : "decimal"}">
+        <div class="alt">${(!unused && (res.ok || locked)) ? esc(altVal(p, v, state.unit)) : ""}</div></td>
+      ${fx ? `<td class="c-formula">${fcell}</td>` : ""}</tr>`;
+  }).join("");
+
+  let o = "";
+  if (S.options && res.mode && res.mode.usesOpt){
+    for (const k of res.mode.usesOpt){ const def = S.options[k];
+      o += `<div class="opts"><span class="lbl">${def.label}</span>${def.choices.map(c => `<button class="chip" data-opt="${k}" data-v="${c.v}" aria-pressed="${st.opt[k]===c.v}">${c.label}</button>`).join("")}</div>`; }
+  }
+  $("opts").innerHTML = o;
+  $("presets").innerHTML = S.presets ? `<div class="opts"><span class="lbl">Presets</span>${S.presets.map((p, i) => `<button class="chip" data-preset="${i}">${esc(p.label)}</button>`).join("")}</div>` : "";
+  $("notes").innerHTML = `<h3>Notes</h3><ul>${S.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`;
+  $("revit").innerHTML = renderRevit(S, st, res);
+  const std = curStd(), checks = res.ok ? checksFor(S, st, res).filter(Boolean) : [];
+  $("checks").innerHTML = renderChecks(S, st, res);
+  $("sStd").innerHTML = summaryBadge(checks, std.id === "custom" ? (state.customName || "Custom") : std.short);
+  $("stdSel").value = std.id;
+  renderStandards();
+  save();
+}
+
+/* ---------- interactions ---------- */
+function toggleLock(id, quiet){
+  const S = byId[state.active], st = state.s[S.id], p = S.pmap[id];
+  if (!p || p.fixed || p.ro) return;
+  const fixed = S.params.filter(q => q.fixed).map(q => q.id);
+  let free = st.locks.filter(l => !fixed.includes(l));
+  if (free.includes(id)) free = free.filter(x => x !== id);
+  else { free.push(id); while (free.length > S.lockCount) free.shift(); }
+  st.locks = [...fixed, ...free];
+  if (!quiet) render();
+}
+function toast(t, ms = 1400){ const el = $("toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("show"), ms); }
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); }
+  catch(e){ const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch(_){} ta.remove(); }
+  toast("Copied to clipboard");
+}
+
+$("units").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; state.unit = b.dataset.u; render(); });
+$("tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; state.active = b.dataset.s; history.replaceState(null, "", "#" + b.dataset.s); render(); });
+$("diagram").addEventListener("click", e => { const g = e.target.closest(".tag"); if (g) toggleLock(g.dataset.p); });
+$("diagram").addEventListener("keydown", e => {
+  const g = e.target.closest(".tag, .seg"); if (!g) return;
+  if (e.key === "Enter" || e.key === " "){ e.preventDefault(); return g.dataset.p ? toggleLock(g.dataset.p) : selectMode(+g.dataset.mode); }
+  if (g.dataset.mode && (e.key === "ArrowLeft" || e.key === "ArrowRight")){ e.preventDefault(); turn(e.key === "ArrowRight" ? 1 : -1); document.querySelector("#diagram .seg.on")?.focus(); }
+});
+{
+  let drag = null;
+  const svgAngle = e => { const svg = $("diagram"), p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    const q = p.matrixTransform(svg.getScreenCTM().inverse()); return Math.atan2(q.x - DC, DC - q.y) / D2R; };
+  const norm = d => ((d % 360) + 540) % 360 - 180;
+  $("diagram").addEventListener("pointerdown", e => {
+    const seg = e.target.closest(".seg"); if (!seg || e.button > 0) return;
+    drag = { start: svgAngle(e), base: dial.angle, d: 0, moved: false, seg };
+    $("diagram").setPointerCapture(e.pointerId); $("dialRot").style.transition = "none";
+  });
+  $("diagram").addEventListener("pointermove", e => {
+    if (!drag) return; drag.d = norm(svgAngle(e) - drag.start);
+    if (Math.abs(drag.d) > 3){ drag.moved = true; $("diagram").classList.add("dragging"); }
+    if (drag.moved) $("dialRot").style.transform = `rotate(${drag.base + drag.d}deg)`;
+  });
+  const end = () => {
+    if (!drag) return; const d = drag; drag = null;
+    $("diagram").classList.remove("dragging"); $("dialRot").style.transition = "";
+    if (!d.moved) return selectMode(+d.seg.dataset.mode);
+    dial.angle = d.base + d.d;
+    selectMode(Math.round(-dial.angle / dial.span));
+  };
+  $("diagram").addEventListener("pointerup", end);
+  $("diagram").addEventListener("pointercancel", end);
+}
+$("turnPrev").addEventListener("click", () => turn(-1));
+$("turnNext").addEventListener("click", () => turn(1));
+NARROW.addEventListener("change", () => { dial.key = ""; render(); });
+$("rows").addEventListener("click", e => {
+  const lb = e.target.closest("[data-lock]"); if (lb) return toggleLock(lb.dataset.lock);
+  const cb = e.target.closest("[data-copy]"); if (cb) return copyText(cb.dataset.copy);
+});
+$("rows").addEventListener("change", e => {
+  const S = byId[state.active], st = state.s[S.id];
+  if (e.target.dataset.name){
+    const id = e.target.dataset.name, v = e.target.value.trim().replace(/[{}\[\]]/g, "");
+    if (!v || v === S.pmap[id].n) delete st.names[id]; else st.names[id] = v;
+    return render();
+  }
+  if (e.target.dataset.val){
+    const id = e.target.dataset.val, p = S.pmap[id], v = parseVal(p, e.target.value, state.unit);
+    if (!isFinite(v)){ e.target.classList.add("bad"); toast("Couldn't read that value"); return; }
+    st.vals[id] = v;
+    if (!st.locks.includes(id) && !p.fixed){ if (S.onType){ S.onType(st, id); return render(); } return toggleLock(id); }
+    render();
+  }
+});
+$("rows").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input")) e.target.blur(); });
+$("opts").addEventListener("click", e => { const b = e.target.closest("[data-opt]"); if (!b) return; state.s[state.active].opt[b.dataset.opt] = b.dataset.v; render(); });
+$("presets").addEventListener("click", e => {
+  const b = e.target.closest("[data-preset]"); if (!b) return;
+  const S = byId[state.active], st = state.s[S.id], pr = S.presets[+b.dataset.preset];
+  Object.assign(st.vals, pr.vals);
+  if (S.applyPreset) S.applyPreset(st, pr);
+  else Object.keys(pr.vals).forEach(id => { if (!st.locks.includes(id)) toggleLock(id, true); });
+  render(); toast(`Preset: ${pr.label}`);
+});
+$("copyAll").addEventListener("click", () => {
+  const S = byId[state.active], st = state.s[S.id], res = solve(S, st);
+  if (!res.ok) return toast("Fix the inputs first");
+  const fx = !!state.showFormulas;
+  const lines = [`${APP.name} — ${S.name}`, "", "Known values:"];
+  st.locks.forEach(id => lines.push(`  ${nameOf(S, st, id)} = ${fmtVal(S.pmap[id], res.vals[id], state.unit)}`));
+  lines.push("", "Results:");
+  S.params.forEach(p => { if (!st.locks.includes(p.id) && res.vals[p.id] !== undefined) lines.push(`  ${nameOf(S, st, p.id)} = ${fmtVal(p, res.vals[p.id], state.unit)}`); });
+  lines.push("", "Use it in Revit:");
+  revitSteps(S, st, res.vals).forEach((s, i) => lines.push(`  ${i + 1}. ${s.tool} — ${s.field}: ${s.value}${s.note ? `  (${s.note})` : ""}`));
+  if (fx){
+    lines.push("", "Family formulas:");
+    S.params.forEach(p => { if (res.formulas[p.id]) lines.push(`  ${nameOf(S, st, p.id)} [${TNAME[p.t]}] = ${res.formulas[p.id]}`); });
+  }
+  const checks = checksFor(S, st, res).filter(Boolean);
+  if (checks.length){
+    lines.push("", `Standards check — ${stdName(curStd())}${S.uses ? " — " + USES[useOf(S, st)].label : ""}:`);
+    checks.forEach(c => lines.push(`  ${ST_ICON[c.status]} ${c.label}${c.value !== undefined ? `: ${c.value} (${c.limit})` : `: ${c.note}`}${c.src && c.src.length ? " [" + c.src.map(x => x.t).join(", ") + "]" : ""}`
+      + (c.formula && fx ? `\n      ${c.fname} [Yes/No] = ${c.formula}` : "")));
+  }
+  copyText(lines.join("\n"));
+});
+$("resetBtn").addEventListener("click", () => { const S = byId[state.active]; state.s[S.id] = freshSolverState(S); render(); toast("Reset to defaults"); });
+
+/* ---------- standards: picker, checks panel, comparison table & custom editor ---------- */
+$("stdSel").addEventListener("change", e => { state.std = e.target.value; render(); toast("Standard: " + stdName(curStd())); });
+$("checks").addEventListener("click", e => {
+  const S = byId[state.active], st = state.s[S.id];
+  const u = e.target.closest("[data-use]"); if (u){ st.opt.use = u.dataset.use; return render(); }
+  if (e.target.closest("[data-apply]")){ applyStandard(S, st); render(); return toast("Inputs set to " + stdName(curStd()) + " limits"); }
+  const c = e.target.closest("[data-copy]"); if (c) copyText(c.dataset.copy);
+});
+$("revit").addEventListener("click", e => { const c = e.target.closest("[data-copy]"); if (c) copyText(c.dataset.copy); });
+$("revit").addEventListener("change", e => {
+  if (e.target.id !== "refLevel") return;
+  const v = parseLen(e.target.value, state.unit);
+  if (!isFinite(v)){ e.target.classList.add("bad"); return toast("Couldn't read that level"); }
+  state.refLevel = v; render();
+});
+$("revit").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input")) e.target.blur(); });
+$("fxBtn").addEventListener("click", () => { state.showFormulas = !state.showFormulas; render(); toast(state.showFormulas ? "Family formulas shown" : "Family formulas hidden"); });
+const USE_ORDER = [...new Set(FIELDS.map(f => f[0]))];
+function renderStandards(){
+  const cur = curStd().id, cols = STANDARDS.filter(x => x.id !== "custom");
+  $("stdCards").innerHTML = STANDARDS.map(x => `<div class="card${x.id === cur ? " cur" : ""}">
+      <span class="cat">${x.id === cur ? "In use" : x.id === "custom" ? "Your values" : "Standard"}</span>
+      <h4>${esc(stdName(x))}</h4><p>${esc(x.desc)}</p>
+      ${x.id === "custom" ? `<input class="search" id="customName" value="${esc(state.customName)}" placeholder="Name it, e.g. your authority" aria-label="Custom standard name">
+        <div class="links"><select id="customFrom" aria-label="Copy values from">${cols.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select>
+        <button class="btn sm" data-fill="1">Copy values</button><button class="btn sm" data-export="1">Export</button><button class="btn sm" data-import="1">Import</button></div>` : ""}
+      <div><button class="btn sm${x.id === cur ? " primary" : ""}" data-usestd="${x.id}">${x.id === cur ? "Selected" : "Use this standard"}</button></div></div>`).join("");
+  const head = `<thead><tr><th>Limit</th>${cols.map(c => `<th class="${c.id === cur ? "cur" : ""}">${esc(c.short)}</th>`).join("")}<th class="${cur === "custom" ? "cur" : ""}">${esc(state.customName || "Custom")}</th></tr></thead>`;
+  let body = "";
+  USE_ORDER.forEach(use => {
+    body += `<tr class="grp"><td colspan="${cols.length + 2}">${esc(USES[use].label)}</td></tr>`;
+    FIELDS.filter(f => f[0] === use).forEach(([, key]) => {
+      const t = FT[key];
+      const cells = cols.map(c => { const x = c.lim[use] && c.lim[use][key];
+        return `<td class="v${c.id === cur ? " cur" : ""}">${x ? `${esc(fmtLim(t, x[0]))}${x[1] !== TYP ? `<span class="src">${esc(x[1])}</span>` : ""}` : `<span class="dash">—</span>`}</td>`; }).join("");
+      const cv = state.custom[use + "." + key], typ = STD.typical.lim[use] && STD.typical.lim[use][key];
+      body += `<tr><td>${esc(FLABEL[key])}</td>${cells}<td class="${cur === "custom" ? "cur" : ""}"><input data-ck="${use}.${key}" data-t="${t}" value="${isFinite(cv) ? esc(fmtLim(t, cv)) : ""}" placeholder="${typ ? esc(fmtLim(t, typ[0])) : "—"}" aria-label="Custom ${esc(USES[use].label)} ${esc(FLABEL[key])}"></td></tr>`;
+    });
+  });
+  $("stdTable").innerHTML = head + `<tbody>${body}</tbody>`;
+}
+$("stdCards").addEventListener("click", e => {
+  const b = e.target.closest("[data-usestd]"); if (b){ state.std = b.dataset.usestd; render(); return toast("Standard: " + stdName(curStd())); }
+  if (e.target.closest("[data-fill]")){
+    const src = STD[$("customFrom").value], typ = STD.typical; state.custom = {};
+    FIELDS.forEach(([use, key]) => { const x = (src.lim[use] && src.lim[use][key]) || (typ.lim[use] && typ.lim[use][key]); if (x) state.custom[use + "." + key] = x[0]; });
+    state.std = "custom"; render(); return toast("Custom values copied from " + src.name);
+  }
+  if (e.target.closest("[data-export]")) return copyText(JSON.stringify({ name: state.customName || "Custom", units: "grades %, ratios H:1V, lengths ft", values: state.custom }, null, 1));
+  if (e.target.closest("[data-import]")){
+    const raw = prompt("Paste a custom standard exported from this app:"); if (!raw) return;
+    try { const j = JSON.parse(raw), vals = {};
+      Object.entries(j.values || {}).forEach(([k, v]) => { if (FIELDS.some(f => f.join(".") === k) && isFinite(v)) vals[k] = +v; });
+      state.custom = vals; if (j.name) state.customName = String(j.name).slice(0, 60); state.std = "custom";
+      renderChrome(); render(); toast(`Imported ${Object.keys(vals).length} limits`);
+    } catch(err){ toast("That isn't a valid export"); }
+  }
+});
+$("stdCards").addEventListener("change", e => {
+  if (e.target.id === "customName"){ state.customName = e.target.value.trim().slice(0, 60); renderChrome(); render(); }
+});
+$("stdTable").addEventListener("change", e => {
+  const k = e.target.dataset.ck; if (!k) return;
+  const t = e.target.dataset.t, raw = e.target.value.trim();
+  if (!raw){ delete state.custom[k]; }
+  else {
+    const v = t === "len" ? parseLen(raw, state.unit) : parseVal({ t }, raw, state.unit);
+    if (!isFinite(v) || v < 0){ e.target.classList.add("bad"); return toast("Couldn't read that value"); }
+    state.custom[k] = v;
+  }
+  if (state.std !== "custom"){ state.std = "custom"; toast("Switched to your custom standard"); }
+  render();
+});
+
+/* ---------- colour themes ---------- */
+const THEMES = [
+  { id:"auto",     name:"Auto (Sunset / Dark)", group:"",      dots:["#ec4560", "#f7941d", "#161a1f"] },
+  { id:"sunset",   name:"Sunset",               group:"Light", dots:["#fff7f1", "#ec4560", "#f7941d"] },
+  { id:"light",    name:"Classic",              group:"Light", dots:["#f4f7fb", "#2563eb", "#06b6d4"] },
+  { id:"bplight",  name:"Blueprint Light",      group:"Light", dots:["#e9f1fb", "#123f8f", "#3aa0ff"] },
+  { id:"ocean",    name:"Ocean",                group:"Light", dots:["#dff3f6", "#0a8aa0", "#22c3a6"] },
+  { id:"colorful", name:"Colorful",             group:"Light", dots:["#7c3aed", "#ec4899", "#f59e0b"] },
+  { id:"sage",     name:"Sage",                 group:"Light", dots:["#f2f6ef", "#2c7a57", "#8bbf3f"] },
+  { id:"night",    name:"Dark",                 group:"Dark",  dots:["#161a1f", "#ff5c7a", "#ffa53d"] },
+  { id:"dark",     name:"Blueprint Night",      group:"Dark",  dots:["#0a1730", "#4c8dff", "#7fd3ff"] },
+  { id:"graphite", name:"Graphite",             group:"Dark",  dots:["#212427", "#f2b84b", "#f97316"] },
+];
+function applyTheme(){
+  const t = THEMES.find(x => x.id === state.theme) ? state.theme : "auto", th = THEMES.find(x => x.id === t);
+  if (t === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
+  const opt = x => `<option value="${x.id}"${x.id === t ? " selected" : ""}>${x.name}</option>`;
+  $("themeSel").innerHTML = THEMES.filter(x => !x.group).map(opt).join("") +
+    ["Light", "Dark"].map(g => `<optgroup label="${g}">${THEMES.filter(x => x.group === g).map(opt).join("")}</optgroup>`).join("");
+  $("themeDots").innerHTML = th.dots.map(c => `<i style="background:${c}"></i>`).join("");
+}
+function setTheme(id){ state.theme = id === "auto" ? null : id; applyTheme(); save(); }
+$("themeSel").addEventListener("change", e => setTheme(e.target.value));
+$("printBtn").addEventListener("click", () => {
+  // window.print() blocks while the dialog is open in Chrome/Edge/Firefox. Some embedded viewers ignore it
+  // or never show a dialog, so say what to do instead of failing silently.
+  toast("Opening print… choose “Save as PDF” to keep a copy. No dialog? Open this page in Chrome or Edge.", 6000);
+  setTimeout(() => {
+    const t0 = Date.now(); window.print();
+    if (Date.now() - t0 < 150) toast("This viewer can't print. Open the page in Chrome or Edge, then press Print.", 6000);
+  }, 120);
+});
+{
+  const setPrint = on => { if (PRINTING.on === on) return; PRINTING.on = on; dial.key = ""; render(); };
+  window.addEventListener("beforeprint", () => setPrint(true));
+  window.addEventListener("afterprint", () => setPrint(false));
+  matchMedia("print").addEventListener("change", e => setPrint(e.matches));
+}
+$("clearBtn").addEventListener("click", () => {
+  if (!confirm("Forget your saved values, parameter names, units and theme on this device?")) return;
+  try { localStorage.removeItem(STORE_KEY); } catch(e){}
+  location.hash = ""; location.reload();
+});
+$("themeNext").addEventListener("click", () => {
+  const i = THEMES.findIndex(x => x.id === (state.theme || "auto"));
+  setTheme(THEMES[(i + 1) % THEMES.length].id); toast("Theme: " + THEMES.find(x => x.id === (state.theme || "auto")).name);
+});
+applyTheme();
+window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (byId[h]){ state.active = h; render(); } });
+
+/* ---------- formula library & reference ---------- */
+const LIB = [
+  ["Convert", "Grade % from rise and run", "Rise / Run * 100", "Number parameter. Run is the plan distance."],
+  ["Convert", "Angle from grade %", "atan(Grade / 100)", "Returns an Angle."],
+  ["Convert", "Grade % from angle", "tan(Slope Angle) * 100", ""],
+  ["Convert", "1 in N from grade %", "100 / Grade", "2% gives 50, a 1 in 50 fall."],
+  ["Convert", "Grade % from 1 in N", "100 / Slope Ratio", "Also turns an H:V batter (3 for 3H:1V) into a grade."],
+  ["Convert", "Per mille (‰) from grade %", "Grade * 10", "Some drainage standards quote falls in ‰."],
+  ["Levels", "Level at a distance", "Start Level + Distance * Grade / 100", "Grade is signed: negative falls."],
+  ["Levels", "Interpolate between two spots", "Level A + (Level B - Level A) * Offset / Distance", "Offset is measured on plan from point A."],
+  ["Levels", "Fall over a length", "Length * Grade / 100", "Returns a Length."],
+  ["Levels", "Mid-point level", "(Level A + Level B) / 2", ""],
+  ["Levels", "Level from a slope ratio", "Start Level - Distance / Slope Ratio", "Falling at Slope Ratio H:1V."],
+  ["Drainage", "Is the fall enough?", "not(Grade < Min Grade)", "Yes/No. Revit has no >=, so negate the opposite test."],
+  ["Drainage", "Fall away from the building", "(Floor Level - Ground at Offset) / Offset * 100", "Grade away from the wall. Many codes ask for about 5% over the first 3 m (6\" in 10'). Check yours."],
+  ["Drainage", "Pipe invert downstream", "Upstream Invert - Pipe Length * Pipe Grade / 100", ""],
+  ["Drainage", "Cover over a pipe", "Ground Level - Invert Level - Pipe Diameter", "Returns a Length."],
+  ["Earthworks", "Cut or fill?", "Existing Ground > Design Level", "Yes/No: true is cut."],
+  ["Earthworks", "Cut / fill depth", "abs(Existing Ground - Design Level)", ""],
+  ["Earthworks", "Batter offset on level ground", "Batter Height * Slope Ratio", "Slope Ratio is H per 1 V."],
+  ["Earthworks", "Batter slope length", "Batter Height * sqrt(1 + Slope Ratio ^ 2)", ""],
+  ["Earthworks", "Trench section area", "(Bottom Width + Depth * Slope Ratio) * Depth", "Area parameter. Both sides battered at Slope Ratio."],
+  ["Contours", "Next contour above", "roundup(Level / Interval - 0.0001) * Interval", "A level exactly on a contour returns itself."],
+  ["Contours", "Next contour below", "rounddown(Level / Interval + 0.0001) * Interval", ""],
+  ["Contours", "Plan distance between contours", "Interval * 100 / Grade", ""],
+  ["Limits", "Cap a grade", "if(Grade > Max Grade, Max Grade, Grade)", "Use a separate driving parameter so it doesn't reference itself."],
+  ["Limits", "Too steep?", "Grade > Max Grade", "Yes/No warning flag."],
+  ["Limits", "Within a grade range", "and(not(Grade < Min Grade), not(Grade > Max Grade))", "True from Min to Max inclusive."],
+  ["Units", "Length to a plain number", "Level / 1 m", "Use Level / 1' for feet."],
+  ["Units", "Plain number to a length", "Number * 1 m", "Use Number * 1' for feet."],
+];
+const CATS = ["All", ...new Set(LIB.map(x => x[0]))];
+let libCat = "All";
+function renderLib(){
+  const q = $("libSearch").value.trim().toLowerCase();
+  $("libFilters").innerHTML = CATS.map(c => `<button class="chip" data-cat="${c}" aria-pressed="${libCat===c}">${c}</button>`).join("");
+  const items = LIB.filter(([c, t, f, n]) => (libCat === "All" || c === libCat) && (!q || (t + f + n + c).toLowerCase().includes(q)));
+  $("lib").innerHTML = items.map(([c, t, f, n]) => `<div class="card"><span class="cat">${c}</span><h4>${esc(t)}</h4>
+    <div class="formula"><code>${esc(f)}</code><button class="copy" data-copy="${esc(f)}">COPY</button></div>${n ? `<p>${esc(n)}</p>` : ""}</div>`).join("")
+    || `<p style="color:var(--muted)">No formulas match “${esc(q)}”.</p>`;
+}
+$("libSearch").addEventListener("input", renderLib);
+$("libFilters").addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (b){ libCat = b.dataset.cat; renderLib(); } });
+$("lib").addEventListener("click", e => { const b = e.target.closest("[data-copy]"); if (b) copyText(b.dataset.copy); });
+
+const SLOPE_TABLE = [
+  [1, "Hard paving, minimum fall (typical)"], [2, "Lawns, paved areas, road cross fall"], [5, "Steepest accessible path without a ramp (typical)"],
+  [100/12, "Steepest accessible ramp"], [25, "Comfortable for ride-on mowers"], [100/3, "Steepest mowed grass bank (typical)"],
+  [50, "Steepest unreinforced fill slope (typical)"], [100, "45°: rock or reinforced slopes only"],
+];
+$("refSlopes").innerHTML = `<thead><tr><th>Grade</th><th>Angle</th><th>Ratio</th><th>Typical use</th></tr></thead><tbody>${SLOPE_TABLE.map(([g, u]) => {
+  const n = 100 / g, r = n >= 5 ? `1 in ${trim(n, 1)}` : `${trim(n, 2)}H:1V`;
+  return `<tr><td>${trim(g, 2)}%</td><td>${trim(Math.atan(g / 100) / D2R, 2)}°</td><td>${r}</td><td>${esc(u)}</td></tr>`; }).join("")}</tbody>`;
+const FNS = [
+  ["sin(x)  cos(x)  tan(x)", "Trig on an Angle parameter or a value like 30°."],
+  ["asin(x)  acos(x)  atan(x)", "Inverse trig on a plain ratio. Returns an Angle."],
+  ["sqrt(x)   x ^ y", "Square root and power."],
+  ["abs(x)", "Absolute value: cut/fill depth either way."],
+  ["round(x)  roundup(x)  rounddown(x)", "Rounding. Apply to a plain ratio such as Level / Interval."],
+  ["if(test, a, b)", "Conditional. Both results must be the same type."],
+  ["and()  or()  not()", "Combine Yes/No tests."],
+  ["<  >  =", "The only comparisons. There is no >=, <= or <>."],
+  ["12.5 m   2' 6\"", "Lengths written inside a formula."],
+  ["Grade / 100", "Grade % as a plain ratio (rise ÷ run)."],
+];
+$("refFns").innerHTML = `<thead><tr><th>Write</th><th>What it does</th></tr></thead><tbody>${FNS.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody>`;
+
+renderChrome(); render(); renderLib();
+{ const h0 = location.hash.slice(1); const el = h0 && !byId[h0] && document.getElementById(h0);
+  if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior: "instant", block: "start" })); }
+
+</script></body></html>
